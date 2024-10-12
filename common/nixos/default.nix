@@ -9,8 +9,7 @@
 , pkgs
 , hostname
 , ...
-}:
-{
+}: {
   imports =
     [
       ./appimage.nix
@@ -50,7 +49,7 @@
       else
         [ ]
     ) ++ (
-      if hostname == "delta-zero" then
+      if hostname == "DELTA-ZERO" then
         [
           ./davmail.nix
           ./dovecot2.nix
@@ -105,7 +104,7 @@
   };
 
   systemd = {
-    network.wait-online.anyInterface = true;
+    network.wait-online.anyInterface = false;
     services.tailscaled = {
       after = [
         "network-online.target"
