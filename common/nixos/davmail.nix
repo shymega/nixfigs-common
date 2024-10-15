@@ -2,8 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-_:
-{
+_: {
   services.davmail = {
     enable = true;
     url = "https://outlook.office365.com/EWS/Exchange.asmx";
@@ -55,7 +54,10 @@ _:
   };
   systemd.services.davmail = {
     serviceConfig = {
-      ReadWritePaths = [ "/var/log/davmail" "/var/lib/davmail" ];
+      ReadWritePaths = [
+        "/var/log/davmail"
+        "/var/lib/davmail"
+      ];
     };
   };
 }
