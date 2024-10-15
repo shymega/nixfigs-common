@@ -9,7 +9,8 @@
 , pkgs
 , hostname
 , ...
-}: {
+}:
+{
   imports =
     [
       ./appimage.nix
@@ -26,7 +27,12 @@
       ./utils
     ]
     ++ (
-      if hostname == "NEO-LINUX" || hostname == "MORPHEUS-LINUX" || hostname == "TWINS-LINUX" then
+      if
+        hostname == "NEO-LINUX"
+        || hostname == "MORPHEUS-LINUX"
+        || hostname == "TWINS-LINUX"
+        || hostname == "TRINITY-LINUX"
+      then
         [
           ./automount.nix
           ./graphical.nix
@@ -37,19 +43,13 @@
           ./davmail.nix
           ./dovecot2.nix
           inputs.nix-index-database.nixosModules.nix-index
-          #          inputs.stylix.nixosModules.stylix
         ]
       else
         [ ]
-    ) ++ (
-      if hostname == "MORPHEUS-LINUX" then
-        [
-          ./backups.nix
-        ]
-      else
-        [ ]
-    ) ++ (
-      if hostname == "DELTA-ZERO" then
+    )
+    ++ (if hostname == "MORPHEUS-LINUX" then [ ./backups.nix ] else [ ])
+    ++ (
+      if hostname == "delta-zero" then
         [
           ./davmail.nix
           ./dovecot2.nix
@@ -106,12 +106,8 @@
   systemd = {
     network.wait-online.anyInterface = false;
     services.tailscaled = {
-      after = [
-        "network-online.target"
-      ];
-      wants = [
-        "network-online.target"
-      ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
     };
   };
 
@@ -120,4 +116,5 @@
   '';
 
   users.mutableUsers = false;
+  services.atd.enable = true;
 }

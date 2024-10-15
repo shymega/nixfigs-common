@@ -17,14 +17,24 @@ let
   inherit (pkgs.lib) optionals hasSuffix optionalAttrs;
 in
 {
-  networking.networkmanager = optionalAttrs true {
+  networking.networkmanager = {
     dns = "systemd-resolved";
     unmanaged = [
       "iphone0"
       "android0"
     ];
-    ensureProfiles.profiles = inputs.nixfigs-networks.networks.all // inputs.nixfigs-networks.networks.work // lib.optionalAttrs (config.networking.hostName == "MORPHEUS-LINUX") inputs.nixfigs-networks.networks.wwan;
+    ensureProfiles.profiles =
+      inputs.nixfigs-networks.networks.all
+      // inputs.nixfigs-networks.networks.work
+      // optionalAttrs
+        (
+          config.networking.hostName == "MORPHEUS-LINUX"
+        )
+        inputs.nixfigs-networks.networks.wwan
+      // inputs.nixfigs-networks.networks.fly-io;
     wifi.macAddress = "stable";
+    wifi.scanRandMacAddress = false;
+    ethernet.macAddress = "stable";
     wifi.powersave = true;
     enable = true;
     dispatcherScripts = optionals (isNixOS && hasSuffix "-LINUX" config.networking.hostName) [

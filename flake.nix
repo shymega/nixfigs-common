@@ -8,7 +8,6 @@
 
   nixConfig = {
     extra-trusted-substituters = [
-      "https://attic.mildlyfunctional.gay/nixbsd"
       "https://cache.dataaturservice.se/spectrum/"
       "https://cache.nixos.org/"
       "https://deckcheatz-nightlies.cachix.org"
@@ -28,7 +27,6 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
       "nix-on-droid.cachix.org-1:56snoMJTXmDRC1Ei24CmKoUqvHJ9XCp+nidK7qkMQrU="
-      "nixbsd:gwcQlsUONBLrrGCOdEboIAeFq9eLaDqfhfXmHZs1mgc="
       "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
       "pre-commit-hooks.cachix.org-1:Pkk3Panw5AW24TOv6kz3PvLhlH8puAsJTBbOPmBo7Rc="
       "spectrum-os.org-2:foQk3r7t2VpRx92CaXb5ROyy/NBdRJQG2uX2XJMYZfU="
@@ -52,8 +50,12 @@
         "aarch64-linux"
       ];
 
-      treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
-      treeFmtEval = treeFmtEachSystem (pkgs: inputs.nixfigs-helpers.inputs.treefmt-nix.lib.evalModule pkgs inputs.nixfigs-helpers.helpers.formatter);
+      treeFmtEachSystem =
+        f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
+      treeFmtEval = treeFmtEachSystem (
+        pkgs:
+        inputs.nixfigs-helpers.inputs.treefmt-nix.lib.evalModule pkgs inputs.nixfigs-helpers.helpers.formatter
+      );
 
       forEachSystem = inputs.nixpkgs.lib.genAttrs systems;
     in
@@ -69,9 +71,7 @@
           })
         // forEachSystem (system: {
           pre-commit-check = import "${inputs.nixfigs-helpers.helpers.checks}" {
-            inherit
-              self
-              system;
+            inherit self system;
             inherit (inputs.nixfigs-helpers) inputs;
             inherit (inputs.nixpkgs) lib;
           };
@@ -84,12 +84,9 @@
         import inputs.nixfigs-helpers.helpers.devShells { inherit pkgs self system; }
       );
       common = {
-        core =
-          ./common/core;
-        nixos =
-          ./common/nixos;
-        darwin =
-          ./common/darwin;
+        core = ./common/core;
+        nixos = ./common/nixos;
+        darwin = ./common/darwin;
       };
     };
   inputs = {
