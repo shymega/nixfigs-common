@@ -2,12 +2,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-{ pkgs
-, ...
-}:
+{ pkgs, ... }:
 {
   system.activationScripts.rp2040-mountpoint = ''
-    ${pkgs.lib.getExe' pkgs.coreutil "mkdir"s} -pv /mnt/dev/rp2040
+    ${pkgs.lib.getExe' pkgs.coreutils "mkdir"} -pv /mnt/dev/rp2040
   '';
 
   services.udev.extraRules = ''
