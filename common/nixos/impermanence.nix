@@ -4,9 +4,9 @@
 
 #
 
-{ inputs
-, lib
+{ lib
 , config
+, inputs
 , ...
 }:
 {
@@ -17,30 +17,29 @@
       [
         "/etc/NetworkManager/system-connections"
         "/etc/secureboot"
-        "/etc/leafnode"
         "/opt"
         "/root"
         "/usr/local"
-        "/var/lib/NetworkManager"
       ]
-      ++ lib.optionals (config.networking.hostName == "NEO-LINUX" || config.networking.hostName == "MORPHEUS-LINUX" || config.networking.hostName == "TWINS-LINUX") [
-        "/var/lib/bluetooth"
-        "/var/lib/cni"
-        "/var/lib/containers"
-        "/var/spool/leafnode"
-        "/var/lib/docker"
-        "/var/lib/flatpak"
-        "/var/lib/libvirt"
-        "/var/lib/lxc"
-        "/var/lib/lxd"
-        "/var/lib/machines"
-        "/var/lib/nixos"
-        "/var/lib/postfix"
-        "/var/lib/wayland"
-        "/var/lib/zerotier-one"
-      ] ++ lib.optionals (config.networking.hostName == "NEO-LINUX" || config.networking.hostName == "MORPHEUS-LINUX" || config.networking.hostName == "delta-zero") [
-        "/var/lib/davmail"
-      ];
+      ++ lib.optionals
+        (config.networking.hostName == "NEO-LINUX" || config.networking.hostName == "TWINS-LINUX")
+        [
+          "/var/lib/NetworkManager"
+          "/var/lib/bluetooth"
+          "/var/lib/cni"
+          "/var/lib/containers"
+          "/var/lib/docker"
+          "/var/lib/flatpak"
+          "/var/lib/libvirt"
+          "/var/lib/lxc"
+          "/var/lib/lxd"
+          "/var/lib/machines"
+          "/var/lib/nixos"
+          "/var/lib/postfix"
+          "/var/spool/atjobs"
+          "/var/spool/atspool"
+          "/var/spool/leafnode"
+        ];
   };
   security.sudo.extraConfig = ''
     Defaults lecture = never

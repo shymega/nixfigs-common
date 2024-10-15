@@ -43,9 +43,18 @@
         action = "IGNORE";
       }
     ];
+    extraAliases = ''
+      postmaster: root
+      root:       dzrodriguez
+    '';
+    extraHeaderChecks = ''
+      # add header to deal with unwanted Microsoft reactions (2024-07-16)
+      /^Date:/i PREPEND x-ms-reactions: disallow 
+    '';
     mapFiles."sasl_passwd" = config.age.secrets.postfix_sasl_passwd.path;
     mapFiles."sender_relay" = config.age.secrets.postfix_sender_relay.path;
     extraConfig = ''
+      relayhost =
       smtp_sender_dependent_authentication = yes
       sender_dependent_default_transport_maps = hash:/etc/postfix/sender_relay
 
@@ -54,6 +63,9 @@
       smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
       smtp_sasl_security_options = noanonymous
       smtp_use_tls = yes
+      smtp_tls_loglevel = 2
+      smtp_use_tls = yes
+      smtp_tls_security_level = may
 
       smtpd_sasl_auth_enable = yes
       smtpd_tls_auth_only = yes
