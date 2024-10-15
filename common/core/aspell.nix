@@ -4,7 +4,12 @@
 
 #
 
-{ pkgs, lib, libx, ... }:
+{
+  pkgs,
+  lib,
+  libx,
+  ...
+}:
 let
   inherit (libx) isNixOS;
 in
