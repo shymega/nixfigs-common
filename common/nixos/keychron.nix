@@ -4,7 +4,11 @@
 
 #
 
-{ config, lib, libx, ... }:
+{ config
+, lib
+, libx
+, ...
+}:
 let
   cfg = config.nixfigs.input.keyboard;
   inherit (libx) isNixOS;
