@@ -4,16 +4,16 @@
 
 #
 
-{ inputs
-, pkgs
-, lib
-, ...
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
 }:
 {
   imports = [
     inputs.home-manager.darwinModules.home-manager
     inputs.nix-index-database.darwinModules.nix-index
-    inputs.stylix.darwinModules.stylix
   ];
 
   environment = {
