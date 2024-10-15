@@ -6,31 +6,30 @@
 
 { pkgs, ... }:
 {
-  environment.systemPackages =
-    with pkgs.unstable;
-    [
-      acpi
-      curl
-      encfs
-      fido2luks
-      fuse
-      git
-      gnupg
-      htop
-      ifuse
-      iw
-      libimobiledevice
-      lm_sensors
-      nano
-      nvme-cli
-      pciutils
-      powertop
-      smartmontools
-      solo2-cli
-      syncthing
-      tmux
-      usbutils
-      wget
-      davmail
-    ];
+  environment.systemPackages = with pkgs.unstable; [
+    acpi
+    aria2
+    curl
+    encfs
+    fido2luks
+    fuse
+    git
+    gnupg
+    goimapnotify
+    htop
+    ifuse
+    iw
+    libimobiledevice
+    lm_sensors
+    nano
+    nvme-cli
+    pciutils
+    powertop
+    smartmontools
+    solo2-cli
+    syncthing
+    tmux
+    usbutils
+    wget
+  ];
 }

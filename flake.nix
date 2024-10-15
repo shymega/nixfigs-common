@@ -52,8 +52,12 @@
         "aarch64-linux"
       ];
 
-      treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
-      treeFmtEval = treeFmtEachSystem (pkgs: inputs.nixfigs-helpers.inputs.treefmt-nix.lib.evalModule pkgs inputs.nixfigs-helpers.helpers.formatter);
+      treeFmtEachSystem =
+        f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
+      treeFmtEval = treeFmtEachSystem (
+        pkgs:
+        inputs.nixfigs-helpers.inputs.treefmt-nix.lib.evalModule pkgs inputs.nixfigs-helpers.helpers.formatter
+      );
 
       forEachSystem = inputs.nixpkgs.lib.genAttrs systems;
     in
@@ -69,9 +73,7 @@
           })
         // forEachSystem (system: {
           pre-commit-check = import "${inputs.nixfigs-helpers.helpers.checks}" {
-            inherit
-              self
-              system;
+            inherit self system;
             inherit (inputs.nixfigs-helpers) inputs;
             inherit (inputs.nixpkgs) lib;
           };
@@ -84,12 +86,9 @@
         import inputs.nixfigs-helpers.helpers.devShells { inherit pkgs self system; }
       );
       common = {
-        core =
-          ./common/core;
-        nixos =
-          ./common/nixos;
-        darwin =
-          ./common/darwin;
+        core = ./common/core;
+        nixos = ./common/nixos;
+        darwin = ./common/darwin;
       };
     };
   inputs = {

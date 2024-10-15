@@ -29,13 +29,19 @@ in
         PubkeyAcceptedKeyTypes ssh-ed25519
         ServerAliveInterval 60
         IPQoS throughput
-        ${if libx.hasSuffix "-darwin" pkgs.system then
-            if builtins.pathExists "${config.users.users.${username}.home}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" then
-              "IdentityAgent ${config.users.users.${username}.home}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+        ${
+          if libx.hasSuffix "-darwin" pkgs.system then
+            if
+              builtins.pathExists "${
+                config.users.users.${username}.home
+              }/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+            then
+              "IdentityAgent ${
+                config.users.users.${username}.home
+              }/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
             else
               "IdentityFile /run/agenix/nixbuild_ssh_priv_key"
-          else
-            if builtins.pathExists "${config.users.users.${username}.home}/.1password/agent.sock" then
+          else if builtins.pathExists "${config.users.users.${username}.home}/.1password/agent.sock" then
             "IdentityAgent ${config.users.users.${username}.home}/.1password/agent.sock"
           else
             "IdentityFile /run/agenix/nixbuild_ssh_priv_key"
@@ -56,9 +62,17 @@ in
         {
           hostName = "eu.nixbuild.net";
           sshUser = "${config.networking.hostName}-build-client";
-          systems = [ "aarch64-linux" "i686-linux" "armv7-linux" "x86_64-linux" ];
+          systems = [
+            "aarch64-linux"
+            "i686-linux"
+            "armv7-linux"
+            "x86_64-linux"
+          ];
           maxJobs = 4;
-          supportedFeatures = [ "benchmark" "big-parallel" ];
+          supportedFeatures = [
+            "benchmark"
+            "big-parallel"
+          ];
           protocol = "ssh-ng";
         }
       ];
@@ -132,7 +146,7 @@ in
         automatic = true;
         dates = [ "06:00" ];
       };
-      nixPath = options.nix.nixPath.default ++ [ "nixpkgs-overlays=/etc/nix/overlays-compat/" ];
+      nixPath = options.nix.nixPath.default; # ++ [ "nixpkgs-overlays=/etc/nix/overlays-compat/" ];
       gc = {
         automatic = true;
         options = "--delete-older-than 14d";

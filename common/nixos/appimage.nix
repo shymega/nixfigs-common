@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   boot.binfmt.registrations.appimage = {
     wrapInterpreterInShell = false;
     interpreter = "${pkgs.lib.getExe pkgs.appimage-run}";
