@@ -40,7 +40,6 @@
           ./steam-hardware.nix
           ./matrix.nix
           ./postfix.nix
-          ./davmail.nix
           ./dovecot2.nix
           inputs.nix-index-database.nixosModules.nix-index
         ]
