@@ -1,9 +1,7 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
 {
   i18n = {
     defaultLocale = "en_GB.UTF-8";
