@@ -1,9 +1,7 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
 {
   lib,
   libx,
@@ -12,12 +10,10 @@
   pkgs,
   inputs,
   ...
-}:
-let
+}: let
   inherit (libx) isNixOS;
   inherit (pkgs.lib) optionals hasSuffix optionalAttrs;
-in
-{
+in {
   networking.networkmanager = {
     dns = "systemd-resolved";
     unmanaged = [
@@ -29,7 +25,8 @@ in
       // inputs.nixfigs-networks.networks.work
       // optionalAttrs (
         config.networking.hostName == "MORPHEUS-LINUX"
-      ) inputs.nixfigs-networks.networks.wwan
+      )
+      inputs.nixfigs-networks.networks.wwan
       // inputs.nixfigs-networks.networks.fly-io;
     wifi.macAddress = "stable-ssid";
     wifi.scanRandMacAddress = true;
@@ -47,6 +44,10 @@ in
       }
     ];
   };
+
+  networking.extraHosts = ''
+    192.168.8.1 router.mudi-01.ext-wifi.rnet.rodriguez.org.uk
+  '';
 
   programs.nm-applet = {
     enable = true;
