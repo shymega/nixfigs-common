@@ -1,11 +1,8 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
-{ lib, ... }:
-{
+{lib, ...}: {
   boot.kernelParams = lib.mkAfter [
     "loglevel=3"
     "quiet"
