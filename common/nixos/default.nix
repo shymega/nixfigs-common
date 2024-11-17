@@ -1,17 +1,14 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
 {
   inputs,
   lib,
   pkgs,
   hostname,
   ...
-}:
-{
+}: {
   imports =
     [
       ./appimage.nix
@@ -29,39 +26,37 @@
     ]
     ++ (
       if
-        hostname == "NEO-LINUX"
+        hostname
+        == "NEO-LINUX"
         || hostname == "MORPHEUS-LINUX"
         || hostname == "TWINS-LINUX"
         || hostname == "TRINITY-LINUX"
-      then
-        [
-          ./automount.nix
-          ./davmail.nix
-          ./dovecot2.nix
-          ./graphical.nix
-          ./impermanence.nix
-          ./matrix.nix
-          ./postfix.nix
-          ./steam-hardware.nix
-          ./xdg.nix
-          inputs.nix-index-database.nixosModules.nix-index
-        ]
-      else
-        [ ]
+      then [
+        ./automount.nix
+        ./davmail.nix
+        ./dovecot2.nix
+        ./graphical.nix
+        ./impermanence.nix
+        ./matrix.nix
+        ./postfix.nix
+        ./steam-hardware.nix
+        ./xdg.nix
+        inputs.nix-index-database.nixosModules.nix-index
+      ]
+      else []
     )
     ++ (
-      if hostname == "delta-zero" then
-        [
-          ./davmail.nix
-          ./dovecot2.nix
-        ]
-      else
-        [ ]
+      if hostname == "delta-zero" || hostname == "DELTA-ZERO"
+      then [
+        ./davmail.nix
+        ./dovecot2.nix
+      ]
+      else []
     );
 
   #    ++ (if hostname == "MORPHEUS-LINUX" then [ ./backups.nix ] else [ ])
 
-  boot.kernelParams = [ "log_buf_len=10M" ];
+  boot.kernelParams = ["log_buf_len=10M"];
 
   documentation = {
     dev.enable = true;
@@ -108,8 +103,8 @@
   systemd = {
     network.wait-online.anyInterface = false;
     services.tailscaled = {
-      after = [ "network-online.target" ];
-      wants = [ "network-online.target" ];
+      after = ["network-online.target"];
+      wants = ["network-online.target"];
     };
   };
 
@@ -121,10 +116,9 @@
   services.atd.enable = true;
   programs.java.binfmt = true;
   services.incron.enable = true;
-  security.pam.services =
-    let
-      inherit (lib) optionalAttrs hasSuffix;
-    in
+  security.pam.services = let
+    inherit (lib) optionalAttrs hasSuffix;
+  in
     optionalAttrs (hasSuffix "-LINUX" hostname) {
       login.gnupg = {
         enable = true;
