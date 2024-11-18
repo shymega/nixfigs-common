@@ -50,7 +50,7 @@
         [ ]
     )
     ++ (
-      if hostname == "delta-zero" then
+      if hostname == "delta-zero" || hostname == "DELTA-ZERO" then
         [
           ./davmail.nix
           ./dovecot2.nix
