@@ -1,11 +1,12 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   services.postfix = {
     enable = true;
     enableSmtp = true;
@@ -29,7 +30,7 @@
       root: noreply+${config.networking.hostName}@rodriguez.org.uk
     '';
     extraHeaderChecks = ''
-      /^Date:/i PREPEND x-ms-reactions: disallow 
+      /^Date:/i PREPEND x-ms-reactions: disallow
     '';
     mapFiles."sasl_passwd" = config.age.secrets.postfix_sasl_passwd.path;
     mapFiles."sender_relay" = config.age.secrets.postfix_sender_relay.path;
