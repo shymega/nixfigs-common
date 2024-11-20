@@ -36,6 +36,8 @@
     mapFiles."sender_relay" = config.age.secrets.postfix_sender_relay.path;
     mapFiles."generic" = pkgs.writeText "postfix_generic" ''
       root@localdomain dzrodriguez@rodriguez.org.uk
+      root@rodriguez.org.uk dominic.rodriguez@rodriguez.org.uk
+      root dominic.rodriguez@rodriguez.org.uk
       @localdomain.local dominic.rodriguez@rodriguez.org.uk
       @rodriguez.org.uk dominic.rodriguez@rodriguez.org.uk
     '';
