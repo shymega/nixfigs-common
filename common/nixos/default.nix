@@ -20,7 +20,6 @@
       ./kernel_params.nix
       ./keychron.nix
       ./networking.nix
-      ./sound.nix
       ./systemd-initrd.nix
       ./utils
     ]
