@@ -45,6 +45,10 @@ in {
     ];
   };
 
+  networking.extraHosts = ''
+    192.168.8.1 router.mudi-01.ext-wifi.rnet.rodriguez.org.uk
+  '';
+
   programs.nm-applet = {
     enable = true;
     indicator = true;
