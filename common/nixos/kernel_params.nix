@@ -10,5 +10,6 @@
     "splash"
     "systemd.show_status=auto"
     "systemd.unified_cgroup_hierarchy=1"
+    "mitigations=off"
   ];
 }
