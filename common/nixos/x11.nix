@@ -22,8 +22,8 @@
     profile home_office_gpdwm2 {
        output "Japan Display Inc. GPD1001H 0x00000001" disable
        output "LG Electronics LG Ultra HD 0x0009B7B4" enable mode 3840x2160 position 0,0 scale 1.50
-       output "DO NOT USE - RTK FlipGo-A1 demoset-1" enable mode 2256x1504 position 3562,0 scale 1.50 transform 90
-       output "DO NOT USE - RTK FlipGo-A2 demoset-1" enable mode 2256x1504 position 2560,0 scale 1.50 transform 90
+       output "DO NOT USE - RTK FlipGo-A1 demoset-1" enable mode 2256x1504 position 2560,1002 scale 1.50
+       output "DO NOT USE - RTK FlipGo-A2 demoset-1" enable mode 2256x1504 position 2560,0 scale 1.50
     }
 
     profile default_thinkpad_x270 {
