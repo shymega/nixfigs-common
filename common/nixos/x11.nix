@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 #
 {pkgs, ...}: let
-  kanshiConfig = pkgs.writeText "config.kanshi" builtins.readFile ./config/kanshi/config;
+  kanshiConfig = builtins.readFile ./config/kanshi/config;
   swayConfig = pkgs.writeText "greetd-sway-config" ''
     # `-l` activates layer-shell mode. Notice that `swaymsg exit` will run after gtkgreet.
     exec "${pkgs.lib.getExe pkgs.kanshi} -c ${kanshiConfig}"
