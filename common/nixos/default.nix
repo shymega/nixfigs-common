@@ -49,6 +49,7 @@
       then [
         ./davmail.nix
         ./dovecot2.nix
+        ./postfix.nix
       ]
       else []
     );
@@ -66,8 +67,8 @@
 
   networking = {
     firewall = {
-      #      trustedInterfaces = [ "tailscale0" ];
-      #      allowedUDPPorts = [ config.services.tailscale.port ];
+      trustedInterfaces = ["tailscale0"];
+      # allowedUDPPorts = [ config.services.tailscale.port ];
     };
   };
 
