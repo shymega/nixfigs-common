@@ -6,7 +6,7 @@ profile desk_home_office_mini_pc {
 
 profile viture_home_office_mini_pc {
   output "LG Electronics LG Ultra HD 0x0009B7B4" disable
-  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.25
+  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.40
 }
 
 profile default_gpdwm2 {
@@ -20,13 +20,13 @@ profile portable_monitor_gpdwm2 {
 }
 
 profile viture_home_office_gpdwm2 {
-  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.50
+  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.40
   output "Japan Display Inc. GPD1001H 0x00000001" disable
   output "LG Electronics LG Ultra HD 0x0009B7B4" disable
 }
 
 profile viture_default_gpdwm2 {
-  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.45
+  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.40
   output "Japan Display Inc. GPD1001H 0x00000001" disable
 }
 
@@ -59,13 +59,13 @@ profile home_office_codethink {
 }
 
 profile viture_home_office_codethink {
-  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.45
+  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.40
   output "California Institute of Technology 0x1404 Unknown" disable
   output "LG Electronics LG Ultra HD 0x0009B7B4" disable
 }
 
 profile viture_default_codethink {
-  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.45
+  output "CVT VITURE 0x88888800" enable mode 1920x1080 position 0,0 scale 1.40
   output "California Institute of Technology 0x1404 Unknown" disable
 }
 
