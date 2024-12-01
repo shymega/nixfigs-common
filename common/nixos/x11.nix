@@ -30,7 +30,7 @@ in {
           autoSuspend = false;
         };
       };
-      desktopManager.gnome3.enable = true;
+      desktopManager.gnome.enable = true;
       xkb.layout = "us";
     };
 
