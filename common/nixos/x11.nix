@@ -31,6 +31,7 @@ in {
 
     desktopManager = {
       plasma6.enable = true;
+      gnome.enable = true;
     };
     libinput.enable = true;
     greetd = {
@@ -50,4 +51,5 @@ in {
     plasma
     zsh
   '';
+  programs.ssh.askPassword = lib.mkDefault "${pkgs.plasma6Packages.ksshaskpass}/bin/ksshaskpass";
 }
