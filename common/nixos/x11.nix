@@ -30,12 +30,12 @@ in {
           autoSuspend = false;
         };
       };
+      desktopManager.gnome3.enable = true;
       xkb.layout = "us";
     };
 
     desktopManager = {
       plasma6.enable = true;
-      gnome.enable = true;
     };
     libinput.enable = true;
     greetd = {
