@@ -55,5 +55,5 @@ in {
     plasma
     zsh
   '';
-  programs.ssh.askPassword = lib.mkDefault "${pkgs.ksshaskpass}/bin/ksshaskpass";
+  programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
 }
