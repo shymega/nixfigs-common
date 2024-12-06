@@ -1,7 +1,7 @@
 profile desk_home_office_mini_pc {
   output "LG Electronics LG Ultra HD 0x0009B7B4" enable mode 3840x2160 position 0,0 scale 1.50
-  output "Invalid Vendor Codename - RTK FlipGo-A1 demoset-1" enable mode 2256x1504 position 4064,0 scale 1.50 transform 90
-  output "Invalid Vendor Codename - RTK FlipGo-A2 demoset-1" enable mode 2256x1504 position 2560,0 scale 1.50 transform 90
+#  output "Invalid Vendor Codename - RTK FlipGo-A1 demoset-1" enable mode 2256x1504 position 4064,0 scale 1.50 transform 90
+#  output "Invalid Vendor Codename - RTK FlipGo-A2 demoset-1" enable mode 2256x1504 position 2560,0 scale 1.50 transform 90
 }
 
 profile viture_home_office_mini_pc {
