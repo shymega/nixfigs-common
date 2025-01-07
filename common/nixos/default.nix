@@ -29,6 +29,7 @@
         || hostname == "MORPHEUS-LINUX"
         || hostname == "TWINS-LINUX"
         || hostname == "TRINITY-LINUX"
+        || lib.hasInfix "DEUSEX" hostname
       then [
         ./automount.nix
         ./davmail.nix
