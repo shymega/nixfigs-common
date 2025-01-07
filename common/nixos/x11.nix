@@ -5,12 +5,12 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: let
-  kanshiConfig = pkgs.writeText "kanshi-config" ''${builtins.readFile ./config/kanshi/config}'';
   swayConfig = pkgs.writeText "greetd-sway-config" ''
     # `-l` activates layer-shell mode. Notice that `swaymsg exit` will run after gtkgreet.
-    exec "${pkgs.lib.getExe pkgs.kanshi} -c ${kanshiConfig}"
+    exec "${pkgs.lib.getExe pkgs.kanshi} -c /etc/greetd/kanshi-config"
     exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP; ${pkgs.lib.getExe pkgs.greetd.gtkgreet} -l; swaymsg exit"
     bindsym Mod4+shift+e exec swaynag \
       -t warning \
@@ -19,6 +19,8 @@
       -b 'Reboot' 'systemctl reboot'
   '';
 in {
+  environment.etc."greetd/kanshi-config".source = "${config.users.users."dzrodriguez".home}/.config/kanshi/config";
+
   services = {
     displayManager.defaultSession = "sway";
     xserver = {
@@ -48,11 +50,17 @@ in {
       };
     };
   };
-  environment.etc."greetd/environments".text = ''
-    ${pkgs.lib.getExe pkgs.sway}
+  environment.etc."greetd/environments".text = let
+    sway-wrapped-hw = pkgs.writeShellScript "sway-wrapped-hw" ''
+      #!/bin/sh
+      export WLR_NO_HARDWARE_CURSORS=1
+      exec ${pkgs.lib.getExe pkgs.sway} --unsupported-gpu
+    '';
+  in ''
+    ${sway-wrapped-hw}
     ${pkgs.lib.getExe pkgs.dwl}
-    plasmax11
-    plasma
+    startplasma-wayland
+    startplasma-x11
     zsh
   '';
   programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
