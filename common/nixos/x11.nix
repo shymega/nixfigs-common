@@ -48,11 +48,17 @@ in {
       };
     };
   };
-  environment.etc."greetd/environments".text = ''
-    ${pkgs.lib.getExe pkgs.sway}
+  environment.etc."greetd/environments".text = let
+    sway-wrapped-hw = pkgs.writeShellScript "sway-wrapped-hw" ''
+      #!/bin/sh
+      export WLR_NO_HARDWARE_CURSORS=1
+      exec ${pkgs.lib.getExe pkgs.sway}
+    '';
+  in ''
+    ${sway-wrapped-hw}
     ${pkgs.lib.getExe pkgs.dwl}
-    plasmax11
-    plasma
+    startplasma-wayland
+    startplasma-x11
     zsh
   '';
   programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
