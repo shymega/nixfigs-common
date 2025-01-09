@@ -9,13 +9,14 @@
   ...
 }: let
   hostname = config.networking.hostName;
-  isPersonal = hostname: 
-    hostname == "NEO-LINUX" ||
-    hostname == "MORPHEUS-LINUX" ||
-    hostname == "TRINITY-LINUX" ||
-    hostname == "TWINS-LINUX" ||
-    hostname == "DEUSEX-LINUX";
-{
+  isPersonal = hostname:
+    hostname
+    == "NEO-LINUX"
+    || hostname == "MORPHEUS-LINUX"
+    || hostname == "TRINITY-LINUX"
+    || hostname == "TWINS-LINUX"
+    || hostname == "DEUSEX-LINUX";
+in {
   imports =
     [
       ./appimage.nix
