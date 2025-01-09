@@ -5,9 +5,17 @@
 {
   lib,
   pkgs,
-  hostname,
+  config,
   ...
-}: {
+}: let
+  hostname = config.networking.hostName;
+  isPersonal = hostname: 
+    hostname == "NEO-LINUX" ||
+    hostname == "MORPHEUS-LINUX" ||
+    hostname == "TRINITY-LINUX" ||
+    hostname == "TWINS-LINUX"
+    hostname == "DEUSEX-LINUX";
+{
   imports =
     [
       ./appimage.nix
@@ -23,13 +31,7 @@
       ./utils
     ]
     ++ (
-      if
-        hostname
-        == "NEO-LINUX"
-        || hostname == "MORPHEUS-LINUX"
-        || hostname == "TWINS-LINUX"
-        || hostname == "TRINITY-LINUX"
-        || lib.hasInfix "DEUSEX" hostname
+      if isPersonal
       then [
         ./automount.nix
         ./davmail.nix
@@ -44,7 +46,7 @@
       else []
     )
     ++ (
-      if hostname == "delta-zero" || hostname == "DELTA-ZERO"
+      if hostname == "DELTA-ZERO"
       then [
         ./davmail.nix
         ./dovecot2.nix
