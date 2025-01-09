@@ -13,7 +13,7 @@
     hostname == "NEO-LINUX" ||
     hostname == "MORPHEUS-LINUX" ||
     hostname == "TRINITY-LINUX" ||
-    hostname == "TWINS-LINUX"
+    hostname == "TWINS-LINUX" ||
     hostname == "DEUSEX-LINUX";
 {
   imports =
