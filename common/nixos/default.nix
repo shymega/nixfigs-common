@@ -5,17 +5,20 @@
 {
   lib,
   pkgs,
-  config,
+  hostname,
   ...
 }: let
-  inherit (config.networking) hostName;
   isPersonal =
-    hostName
+    hostname
     == "NEO-LINUX"
-    || hostName == "MORPHEUS-LINUX"
-    || hostName == "TRINITY-LINUX"
-    || hostName == "TWINS-LINUX"
-    || hostName == "DEUSEX-LINUX";
+    || hostname == "MORPHEUS-LINUX"
+    || hostname == "TRINITY-LINUX"
+    || hostname == "TWINS-LINUX"
+    || hostname == "DEUSEX-LINUX";
+  isDeltaZero =
+    hostname
+    == "DELTA-ZERO"
+    || hostname == "delta-zero";
 in {
   imports =
     [
@@ -47,7 +50,7 @@ in {
       else []
     )
     ++ (
-      if hostName == "DELTA-ZERO"
+      if isDeltaZero
       then [
         ./davmail.nix
         ./dovecot2.nix
@@ -134,7 +137,7 @@ in {
   security.pam.services = let
     inherit (lib) optionalAttrs hasSuffix;
   in
-    optionalAttrs (hasSuffix "-LINUX" hostName) {
+    optionalAttrs (hasSuffix "-LINUX" hostname) {
       login.gnupg = {
         enable = true;
         noAutostart = true;
