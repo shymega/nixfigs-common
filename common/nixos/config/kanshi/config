@@ -55,7 +55,6 @@ profile default_thinkpad_x270 {
 profile desk_home_thinkpad_x270 {
   output "Unknown 0x226D 0x00000000" disable	
   output "LG Electronics LG Ultra HD 0x0000BFB4" enable mode 3840x2160 position 0,0 scale 1.50
-  output "BNQ BENQ E2220HD SBA04454019" enable mode 1920x1080 position 2194,0 scale 1.00
 }
 
 profile default_codethink {
@@ -87,16 +86,16 @@ profile portable_monitor_codethink {
 }
 
 profile default_single_gpd_duo {
-  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,0
+  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,0 transform normal
 }
 
 profile default_dual_gpd_duo {
-  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,1200
+  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,1200 transform normal
   output "Stargate Technology DP 0x01010101" enable mode 2880x1800 scale 1.50 position 0,0
 }
 
 profile default_full_gpd_duo {
-  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,1200
+  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,1200 
   output "Stargate Technology DP 0x01010101" enable mode 2880x1800 scale 1.50 position 0,0
   output "LG Electronics LG Ultra HD 0x0009B7B4" enable mode 3840x2160 position 0,0 scale 1.50
 #  output "Invalid Vendor Codename - RTK FlipGo-A1 demoset-1" enable mode 2256x1504 position 2560,0 scale 1.50
