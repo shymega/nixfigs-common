@@ -86,17 +86,17 @@ profile portable_monitor_codethink {
 }
 
 profile default_single_gpd_duo {
-  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,0 transform normal
+  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,0 transform 180
 }
 
 profile default_dual_gpd_duo {
-  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,1200 transform normal
-  output "Stargate Technology DP 0x01010101" enable mode 2880x1800 scale 1.50 position 0,0
+  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,1200 transform 180
+  output "Stargate Technology DP 0x01010101" enable mode 2880x1800 scale 1.50 position 0,0 transform normal
 }
 
-profile default_full_gpd_duo {
-  output "Samsung Display Corp. 0x4166 Unknown" enable mode 2880x1800 scale 1.50 position 0,1200 
-  output "Stargate Technology DP 0x01010101" enable mode 2880x1800 scale 1.50 position 0,0
+profile default_home_office_full_gpd_duo {
+  output "Samsung Display Corp. 0x4166 Unknown" disable
+  output "Stargate Technology DP 0x01010101" disable
   output "LG Electronics LG Ultra HD 0x0009B7B4" enable mode 3840x2160 position 0,0 scale 1.50
 #  output "Invalid Vendor Codename - RTK FlipGo-A1 demoset-1" enable mode 2256x1504 position 2560,0 scale 1.50
 #  output "Invalid Vendor Codename - RTK FlipGo-A2 demoset-1" enable mode 2256x1504 position 4064,0 scale 1.50
