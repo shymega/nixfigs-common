@@ -38,7 +38,6 @@ in {
       if isPersonal
       then [
         ./automount.nix
-        ./davmail.nix
         ./dovecot2.nix
         ./graphical.nix
         ./impermanence.nix
