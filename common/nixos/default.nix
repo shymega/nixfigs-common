@@ -38,7 +38,6 @@ in {
       if isPersonal
       then [
         ./automount.nix
-        ./davmail.nix
         ./dovecot2.nix
         ./graphical.nix
         ./impermanence.nix
@@ -132,6 +131,7 @@ in {
 
   users.mutableUsers = false;
   services.atd.enable = true;
+  programs.nix-ld.enable = true;
   programs.java.binfmt = true;
   services.incron.enable = true;
   security.pam.services = let
