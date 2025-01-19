@@ -6,7 +6,6 @@
   pkgs,
   lib,
   libx,
-  hostRoles,
   config,
   ...
 }:
@@ -21,7 +20,8 @@ with lib; let
       -b 'Poweroff' 'systemctl poweroff' \
       -b 'Reboot' 'systemctl reboot'
   '';
-  enabled = libx.roleUtils.checkRoles ["workstation" "work"] hostRoles;
+  inherit (libx.roleUtils) checkRoles;
+  enabled = checkRoles ["workstation"] config.nixfigs.meta.rolesEnabled;
 in {
   config = mkIf enabled {
     environment.etc."greetd/kanshi-config".source = "${config.users.users."dzrodriguez".home}/.config/kanshi/config";
