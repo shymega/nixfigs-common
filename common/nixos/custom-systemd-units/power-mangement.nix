@@ -43,7 +43,7 @@ in {
         '';
       };
 
-      powertop = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "TWINS-LINUX" || hasInfix hostName "DEUSEX")
+      powertop = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "TWINS-LINUX" || hasInfix hostName "DEUSEX") {
         description = "Auto-tune Power Management with powertop";
         unitConfig = {
           RefuseManualStart = true;
