@@ -30,7 +30,7 @@ in {
         '';
       };
 
-      portable-power-saving-tdp = lib.mkIf (hostName == "MORPHEUS-LINUX" || hasInfix hostName "DEUSEX")
+      portable-power-saving-tdp = lib.mkIf (hostName == "MORPHEUS-LINUX" || hasInfix hostName "DEUSEX") {
         description = "Change TDP to power saving TDP when on battery power";
         wantedBy = ["battery.target"];
         unitConfig = {
