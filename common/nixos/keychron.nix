@@ -8,7 +8,6 @@
   libx,
   ...
 }: let
-  cfg = config.nixfigs.input.keyboard;
   inherit (libx) isNixOS;
 in
   with lib; {
@@ -19,9 +18,14 @@ in
         default = isNixOS;
       };
     };
-    config = mkIf cfg.keychron.enable {
+    config = mkIf true {
       boot.extraModprobeConfig = ''
         options hid_apple fnmode=0
       '';
+      environment.systemPackages = with pkgs; [
+        via
+      ];
+      services.udev.packages = [pkgs.via];
+      hardware.keyboard.qmk.enable = true;
     };
   }
