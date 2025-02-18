@@ -6,6 +6,7 @@
   config,
   lib,
   libx,
+  pkgs
   ...
 }: let
   inherit (libx) isNixOS;
