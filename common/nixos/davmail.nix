@@ -23,7 +23,7 @@ _: {
       davmail.imapAutoExpunge = "true";
       davmail.imapIdleDelay = "90";
       davmail.imapIncludeSpecialFolders = "false";
-      davmail.imapPort = "1143";
+      davmail.imapPort = "1153";
       davmail.keepDelay = "30";
       davmail.ldapPort = "1389";
       davmail.logFilePath = "/var/log/davmail/davmail.log";
