@@ -6,7 +6,6 @@
   pkgs,
   lib,
   libx,
-  hostRoles,
   config,
   ...
 }:
@@ -21,10 +20,21 @@ with lib; let
       -b 'Poweroff' 'systemctl poweroff' \
       -b 'Reboot' 'systemctl reboot'
   '';
-  enabled = libx.roleUtils.checkRoles ["workstation" "work"] hostRoles;
+  inherit (libx.roleUtils) checkRoles;
+  enabled = checkRoles ["workstation"] config.nixfigs.meta.rolesEnabled;
+  sway-wrapped-hw = pkgs.writeShellScript "sway-wrapped-hw" ''
+    #!/bin/sh
+    export WLR_NO_HARDWARE_CURSORS=1
+    exec ${getExe pkgs.sway} --unsupported-gpu "$@"
+  '';
 in {
   config = mkIf enabled {
-    environment.etc."greetd/kanshi-config".source = "${config.users.users."dzrodriguez".home}/.config/kanshi/config";
+    environment.etc."greetd/kanshi-config" = {
+      source = "${config.users.users."dzrodriguez".home}/.config/kanshi/config";
+      uid = 0;
+      gid = 0;
+      mode = "777";
+    };
 
     services = {
       displayManager.defaultSession = "sway";
@@ -37,10 +47,11 @@ in {
             autoSuspend = false;
           };
         };
-        desktopManager.gnome.enable = true;
+        desktopManager = {
+          gnome.enable = true;
+        };
         xkb.layout = "us";
       };
-
       desktopManager = {
         plasma6.enable = true;
       };
@@ -49,25 +60,19 @@ in {
         enable = true;
         settings = {
           default_session = {
-            command = "${getExe pkgs.sway} --config ${swayConfig}";
+            command = "${sway-wrapped-hw} --config ${swayConfig}";
           };
           inital_session.user = "dzrodriguez";
         };
       };
     };
-    environment.etc."greetd/environments".text = let
-      sway-wrapped-hw = pkgs.writeShellScript "sway-wrapped-hw" ''
-        #!/bin/sh
-        export WLR_NO_HARDWARE_CURSORS=1
-        exec ${getExe pkgs.sway} --unsupported-gpu
-      '';
-    in ''
+    environment.etc."greetd/environments".text = ''
       ${sway-wrapped-hw}
       ${getExe pkgs.dwl}
       startplasma-wayland
       startplasma-x11
       zsh
     '';
-    programs.ssh.askPassword = mkForce "${getExe pkgs.ksshaskpass}/bin/ksshaskpass";
+    programs.ssh.askPassword = mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
   };
 }
