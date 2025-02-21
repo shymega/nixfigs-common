@@ -7,7 +7,19 @@
   pkgs,
   hostname,
   ...
-}: {
+}: let
+  isPersonal =
+    hostname
+    == "NEO-LINUX"
+    || hostname == "MORPHEUS-LINUX"
+    || hostname == "TRINITY-LINUX"
+    || hostname == "TWINS-LINUX"
+    || hostname == "DEUSEX-LINUX";
+  isDeltaZero =
+    hostname
+    == "DELTA-ZERO"
+    || hostname == "delta-zero";
+in {
   imports =
     [
       ./appimage.nix
@@ -23,13 +35,7 @@
       ./utils
     ]
     ++ (
-      if
-        hostname
-        == "NEO-LINUX"
-        || hostname == "MORPHEUS-LINUX"
-        || hostname == "TWINS-LINUX"
-        || hostname == "TRINITY-LINUX"
-        || lib.hasInfix "DEUSEX" hostname
+      if isPersonal
       then [
         ./automount.nix
         ./davmail.nix
@@ -44,7 +50,7 @@
       else []
     )
     ++ (
-      if hostname == "delta-zero" || hostname == "DELTA-ZERO"
+      if isDeltaZero
       then [
         ./davmail.nix
         ./dovecot2.nix
