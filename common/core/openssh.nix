@@ -8,9 +8,9 @@
     startWhenNeeded = true;
     allowSFTP = true;
     settings = {
-      PasswordAuthentication = lib.mkForce false;
+      PasswordAuthentication = lib.mkForce true;
       PermitRootLogin = "no";
-      KbdInteractiveAuthentication = lib.mkForce false;
+      KbdInteractiveAuthentication = lib.mkForce true;
     };
   };
 
