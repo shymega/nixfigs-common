@@ -5,7 +5,9 @@
 #
 
 { pkgs, ... }:
-
+let
+  inherit (pkgs.lib) getExe';
+in
 {
   systemd = {
     services = {
@@ -17,8 +19,8 @@
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = "true";
-          ExecStart = "-${pkgs.coreutils}/bin/touch /tmp/network-online.flag";
-          ExecStop = "-${pkgs.coreutils}/bin/rm /tmp/network-online.flag";
+          ExecStart = "-${getExe' pkgs.coreutils "touch"} /tmp/network-online.flag";
+          ExecStop = "-${getExe' pkgs.coreutils "rm"} /tmp/network-online.flag";
         };
         wantedBy = [ "network-online.target" ];
       };
@@ -30,8 +32,8 @@
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = "true";
-          ExecStart = "-${pkgs.coreutils}/bin/touch /tmp/network-mifi.flag";
-          ExecStop = "-${pkgs.coreutils}/bin/rm /tmp/network-mifi.flag";
+          ExecStart = "-${getExe' pkgs.coreutils "touch"} /tmp/network-mifi.flag";
+          ExecStop = "-${getExe' pkgs.coreutils "rm"} /tmp/network-mifi.flag";
         };
         wantedBy = [ "network-mifi.target" ];
       };
@@ -43,8 +45,8 @@
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = "true";
-          ExecStart = "-${pkgs.coreutils}/bin/touch /tmp/network-portal.flag";
-          ExecStop = "-${pkgs.coreutils}/bin/rm /tmp/network-portal.flag";
+          ExecStart = "-${getExe' pkgs.coreutils "touch"} /tmp/network-portal.flag";
+          ExecStop = "-${getExe' pkgs.coreutils "rm"} /tmp/network-portal.flag";
         };
         wantedBy = [ "network-portal.target" ];
       };
@@ -56,8 +58,8 @@
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = "true";
-          ExecStart = "-${pkgs.coreutils}/bin/touch /tmp/network-rnet.flag";
-          ExecStop = "-${pkgs.coreutils}/bin/rm /tmp/network-rnet.flag";
+          ExecStart = "-${getExe' pkgs.coreutils "touch"} /tmp/network-rnet.flag";
+          ExecStop = "-${getExe' pkgs.coreutils "rm"} /tmp/network-rnet.flag";
         };
         wantedBy = [ "network-rnet.target" ];
       };
@@ -69,8 +71,8 @@
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = "true";
-          ExecStart = "-${pkgs.coreutils}/bin/touch /tmp/network-vpn.flag";
-          ExecStop = "-${pkgs.coreutils}/bin/rm /tmp/network-vpn.flag";
+          ExecStart = "-${getExe' pkgs.coreutils "touch"} /tmp/network-vpn.flag";
+          ExecStop = "-${getExe' pkgs.coreutils "rm"} /tmp/network-vpn.flag";
         };
         wantedBy = [ "network-vpn.target" ];
       };
