@@ -135,7 +135,6 @@ in
         max-free = ${toString (1024 * 1024 * 1024)}
         !include ${config.age.secrets.nix_conf_access_tokens.path}
       '';
-      package = pkgs.nixVersions.latest;
       registry = rec {
         nixpkgs.flake = inputs.nixpkgs;
         n.flake = nixpkgs.flake;
