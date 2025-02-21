@@ -4,12 +4,14 @@
 
 #
 
-{ inputs
-, lib
-, pkgs
-, hostname
-, ...
-}: {
+{
+  inputs,
+  lib,
+  pkgs,
+  hostname,
+  ...
+}:
+{
   imports =
     [
       ./appimage.nix
@@ -20,36 +22,35 @@
       ./inst_packages.nix
       ./kernel_params.nix
       ./keychron.nix
-      ./sound.nix
       ./networking.nix
+      ./sound.nix
       ./systemd-initrd.nix
       ./utils
     ]
     ++ (
-      if hostname == "NEO-LINUX" || hostname == "MORPHEUS-LINUX" || hostname == "TWINS-LINUX" then
+      if
+        hostname == "NEO-LINUX"
+        || hostname == "MORPHEUS-LINUX"
+        || hostname == "TWINS-LINUX"
+        || hostname == "TRINITY-LINUX"
+      then
         [
           ./automount.nix
-          ./graphical.nix
-          ./impermanence.nix
-          ./steam-hardware.nix
-          ./matrix.nix
-          ./postfix.nix
           ./davmail.nix
           ./dovecot2.nix
+          ./graphical.nix
+          ./impermanence.nix
+          ./matrix.nix
+          ./postfix.nix
+          ./steam-hardware.nix
+          ./xdg.nix
           inputs.nix-index-database.nixosModules.nix-index
-          #          inputs.stylix.nixosModules.stylix
         ]
       else
         [ ]
-    ) ++ (
-      if hostname == "MORPHEUS-LINUX" then
-        [
-          ./backups.nix
-        ]
-      else
-        [ ]
-    ) ++ (
-      if hostname == "DELTA-ZERO" then
+    )
+    ++ (
+      if hostname == "delta-zero" then
         [
           ./davmail.nix
           ./dovecot2.nix
@@ -57,6 +58,8 @@
       else
         [ ]
     );
+
+  #    ++ (if hostname == "MORPHEUS-LINUX" then [ ./backups.nix ] else [ ])
 
   boot.kernelParams = [ "log_buf_len=10M" ];
 
@@ -81,7 +84,6 @@
   };
 
   security = {
-    pam.services.sudo.u2fAuth = true;
     sudo = {
       enable = true;
       wheelNeedsPassword = lib.mkDefault false;
@@ -106,12 +108,8 @@
   systemd = {
     network.wait-online.anyInterface = false;
     services.tailscaled = {
-      after = [
-        "network-online.target"
-      ];
-      wants = [
-        "network-online.target"
-      ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
     };
   };
 
@@ -120,4 +118,23 @@
   '';
 
   users.mutableUsers = false;
+  services.atd.enable = true;
+  programs.java.binfmt = true;
+  services.incron.enable = true;
+  security.pam.services =
+    let
+      inherit (lib) optionalAttrs hasSuffix;
+    in
+    optionalAttrs (hasSuffix "-LINUX" hostname) {
+      login.gnupg = {
+        enable = true;
+        noAutostart = true;
+        storeOnly = true;
+      };
+      greetd.gnupg = {
+        enable = true;
+        noAutostart = true;
+        storeOnly = true;
+      };
+    };
 }

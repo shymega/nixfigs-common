@@ -4,11 +4,12 @@
 
 #
 
-{ config
-, pkgs
-, lib
-, libx
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  libx,
+  ...
 }:
 let
   cfg = config.nixfigs.fonts;
