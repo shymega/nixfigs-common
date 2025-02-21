@@ -1,11 +1,8 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   environment = {
     variables = {
       TERMINAL = "${pkgs.lib.getExe pkgs.alacritty}";

@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 _: {
   services.davmail = {
     enable = true;
@@ -13,15 +12,15 @@ _: {
       davmail.caldavPastDelay = "0";
       davmail.caldavPort = "1080";
       davmail.carddavReadPhoto = "true";
-      davmail.disableGuiNotifications = "false";
-      davmail.disableTrayActivitySwitch = "false";
+      davmail.disableGuiNotifications = "true";
+      davmail.disableTrayActivitySwitch = "true";
       davmail.disableUpdateCheck = "true";
       davmail.enableKeepAlive = "false";
       davmail.enableKerberos = "false";
       davmail.enableProxy = "false";
       davmail.forceActiveSyncUpdate = "false";
-      davmail.imapAlwaysApproxMsgSize = "false";
-      davmail.imapAutoExpunge = "false";
+      davmail.imapAlwaysApproxMsgSize = "";
+      davmail.imapAutoExpunge = "true";
       davmail.imapIdleDelay = "90";
       davmail.imapIncludeSpecialFolders = "false";
       davmail.imapPort = "1143";
@@ -30,7 +29,7 @@ _: {
       davmail.logFilePath = "/var/log/davmail/davmail.log";
       davmail.logFileSize = "1MB";
       davmail.mode = "O365Modern";
-      davmail.oauth.persistToken = true;
+      davmail.oauth.persistToken = "true";
       davmail.oauth.tokenFilePath = "/var/lib/davmail/creds.properties";
       davmail.popMarkReadOnRetr = "false";
       davmail.popPort = "0";

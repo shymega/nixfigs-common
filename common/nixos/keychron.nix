@@ -1,31 +1,27 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
 {
   config,
   lib,
   libx,
   ...
-}:
-let
+}: let
   cfg = config.nixfigs.input.keyboard;
   inherit (libx) isNixOS;
 in
-with lib;
-{
-  options = {
-    nixfigs.input.keyboard.keychron.enable = mkOption {
-      type = with types; bool;
-      description = "Enable Linux-specific mitigations for the Keychron keyboard.";
-      default = isNixOS;
+  with lib; {
+    options = {
+      nixfigs.input.keyboard.keychron.enable = mkOption {
+        type = with types; bool;
+        description = "Enable Linux-specific mitigations for the Keychron keyboard.";
+        default = isNixOS;
+      };
     };
-  };
-  config = mkIf cfg.keychron.enable {
-    boot.extraModprobeConfig = ''
-      options hid_apple fnmode=0
-    '';
-  };
-}
+    config = mkIf cfg.keychron.enable {
+      boot.extraModprobeConfig = ''
+        options hid_apple fnmode=0
+      '';
+    };
+  }
