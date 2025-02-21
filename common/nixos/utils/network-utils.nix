@@ -9,7 +9,7 @@
       #! ${pkgs.stdenv.shell}
       set -eu
 
-      exec ${pkgs.networkmanager.outPath}/bin/nmcli \
+      exec ${pkgs.lib.getExe' pkgs.networkmanager "nmcli"} \
         networking connectivity
     '')
   ];
