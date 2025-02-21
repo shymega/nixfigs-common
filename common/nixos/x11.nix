@@ -1,11 +1,8 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   kanshiConfig = pkgs.writeText "config.kanshi" ''
     profile desk_home_mini_pc {
       output "LG Electronics LG Ultra HD 0x0009B7B4" enable mode 3840x2160 position 0,0 scale 1.50
@@ -35,7 +32,7 @@ let
     }
 
     profile desk_home_thinkpad_x270 {
-      output "Unknown 0x226D 0x00000000" disable	
+      output "Unknown 0x226D 0x00000000" disable
       output "LG Electronics LG Ultra HD 0x0000BFB4" enable mode 3840x2160 position 0,0 scale 1.50
       output "BNQ BENQ E2220HD SBA04454019" enable mode 1920x1080 position 2194,0
     }
@@ -78,8 +75,7 @@ let
       -b 'Poweroff' 'systemctl poweroff' \
       -b 'Reboot' 'systemctl reboot'
   '';
-in
-{
+in {
   services = {
     displayManager.defaultSession = "sway";
     xserver = {
@@ -109,7 +105,7 @@ in
     };
   };
   environment.etc."greetd/environments".text = ''
-    ${pkgs.lib.getExe pkgs.sway} 
+    ${pkgs.lib.getExe pkgs.sway}
     ${pkgs.lib.getExe pkgs.dwl}
     plasmax11
     plasma
