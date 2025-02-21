@@ -15,7 +15,7 @@
 
     u2f = {
       enable = false;
-      cue = false;
+      settings.cue = false;
       control = "sufficient";
     };
   };
