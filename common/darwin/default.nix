@@ -38,7 +38,7 @@
       "/opt/homebrew/sbin"
     ];
     variables = {
-      SHELL = lib.getExe pkgs.zsh;
+      SHELL = "${lib.getExe pkgs.zsh}";
     };
     postBuild = ''
       ln -sv ${pkgs.path} $out/nixpkgs
