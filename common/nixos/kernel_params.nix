@@ -12,4 +12,5 @@
     "systemd.unified_cgroup_hierarchy=1"
     "mitigations=off"
   ];
+  boot.kernel.sysctl."kernel.sysrq" = 1;
 }
