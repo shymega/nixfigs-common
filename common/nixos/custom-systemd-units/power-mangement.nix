@@ -13,7 +13,7 @@
 in {
   systemd = {
     services = {
-      desktop-power-maximum-tdp = lib.mkIf (hostName == "NEO-LINUX" || hostName == "MORPHEUS-LINUX") {
+      desktop-power-maximum-tdp = lib.mkIf (hostName == "NEO-LINUX" || hostName == "MORPHEUS-LINUX" || hostName == "DEUSEX-LINUX") {
         description = "Change TDP to maximum TDP when on AC power";
         wantedBy = [
           "multi-user.target"
@@ -30,7 +30,7 @@ in {
         '';
       };
 
-      portable-power-saving-tdp = lib.mkIf (hostName == "MORPHEUS-LINUX") {
+      portable-power-saving-tdp = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "DEUSEX-LINUX") {
         description = "Change TDP to power saving TDP when on battery power";
         wantedBy = ["battery.target"];
         unitConfig = {
@@ -43,7 +43,7 @@ in {
         '';
       };
 
-      powertop = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "TWINS-LINUX") {
+      powertop = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "TWINS-LINUX" || hostName == "DEUSEX-LINUX") {
         description = "Auto-tune Power Management with powertop";
         unitConfig = {
           RefuseManualStart = true;

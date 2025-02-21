@@ -9,8 +9,7 @@
 }:
 with lib; let
   inherit (libx.roleUtils) checkRoles;
-  inherit (config.nixfigs.meta) rolesEnabled;
-  enabled = roleUtils.checkRoles ["personal"] config.nixfigs.meta.rolesEnabled;
+  enabled = checkRoles ["personal"] config.nixfigs.meta.rolesEnabled;
 in {
   config = mkIf enabled {
     services.pantalaimon-headless.instances.rnetMatrix = {
