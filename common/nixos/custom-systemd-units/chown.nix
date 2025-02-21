@@ -1,19 +1,19 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
-{ config, lib, ... }:
-let
-  inherit (config.networking) hostName;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  inherit (config.networking) hostName;
+in {
   systemd = {
     services = {
       chown-data = lib.mkIf (hostName == "NEO-LINUX") {
         description = "Change permissions on /data";
-        wantedBy = [ "multi-user.target" ];
+        wantedBy = ["multi-user.target"];
         unitConfig = {
           RefuseManualStart = true;
         };

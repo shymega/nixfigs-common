@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 {
   inputs,
   lib,
@@ -11,11 +10,9 @@
   options,
   username,
   ...
-}:
-let
+}: let
   inherit (libx) isDarwin isForeignNix isNixOS;
-in
-{
+in {
   environment.etc."nix/overlays-compat/overlays.nix".text = ''
     final: prev:
     with prev.lib;
@@ -31,26 +28,24 @@ in
         ServerAliveInterval 60
         IPQoS throughput
         ${
-          if libx.hasSuffix "-darwin" pkgs.system then
-            if
-              builtins.pathExists "${
-                config.users.users.${username}.home
-              }/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-            then
-              "IdentityAgent ${
-                config.users.users.${username}.home
-              }/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-            else
-              "IdentityFile /run/agenix/nixbuild_ssh_priv_key"
-          else if builtins.pathExists "${config.users.users.${username}.home}/.1password/agent.sock" then
-            "IdentityAgent ${config.users.users.${username}.home}/.1password/agent.sock"
-          else
-            "IdentityFile /run/agenix/nixbuild_ssh_priv_key"
-        }
+        if libx.hasSuffix "-darwin" pkgs.system
+        then
+          if
+            builtins.pathExists "${
+              config.users.users.${username}.home
+            }/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+          then "IdentityAgent ${
+            config.users.users.${username}.home
+          }/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+          else "IdentityFile /run/agenix/nixbuild_ssh_priv_key"
+        else if builtins.pathExists "${config.users.users.${username}.home}/.1password/agent.sock"
+        then "IdentityAgent ${config.users.users.${username}.home}/.1password/agent.sock"
+        else "IdentityFile /run/agenix/nixbuild_ssh_priv_key"
+      }
     '';
     knownHosts = {
       nixbuild = {
-        hostNames = [ "eu.nixbuild.net" ];
+        hostNames = ["eu.nixbuild.net"];
         publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM";
       };
     };
@@ -80,7 +75,7 @@ in
       settings = {
         accept-flake-config = true;
         extra-platforms = config.boot.binfmt.emulatedSystems;
-        allowed-users = [ "@wheel" ];
+        allowed-users = ["@wheel"];
         build-users-group = "nixbld";
         builders-use-substitutes = true;
         trusted-users = [
@@ -145,8 +140,9 @@ in
       };
       optimise = {
         automatic = true;
-        dates = [ "06:00" ];
+        dates = ["06:00"];
       };
+      package = pkgs.lix;
       nixPath = options.nix.nixPath.default; # ++ [ "nixpkgs-overlays=/etc/nix/overlays-compat/" ];
       gc = {
         automatic = true;

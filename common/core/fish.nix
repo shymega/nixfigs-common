@@ -1,15 +1,15 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
 #
-
-{ lib, config, ... }:
-let
+{
+  lib,
+  config,
+  ...
+}: let
   inherit (lib) mkOption mkIf;
   inherit (lib.types) bool;
-in
-{
+in {
   options = {
     nixfigs.shells.fish = {
       enable = mkOption {
