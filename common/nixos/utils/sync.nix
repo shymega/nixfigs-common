@@ -1,9 +1,7 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   environment.systemPackages = [
     (pkgs.writeScriptBin "clean-syncthing" ''
       #! ${pkgs.stdenv.shell}
