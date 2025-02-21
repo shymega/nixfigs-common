@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 #
 {
-  inputs,
   lib,
   pkgs,
   hostname,
@@ -20,7 +19,6 @@
       ./kernel_params.nix
       ./keychron.nix
       ./networking.nix
-      ./sound.nix
       ./systemd-initrd.nix
       ./utils
     ]
@@ -31,6 +29,7 @@
         || hostname == "MORPHEUS-LINUX"
         || hostname == "TWINS-LINUX"
         || hostname == "TRINITY-LINUX"
+        || lib.hasInfix "DEUSEX" hostname
       then [
         ./automount.nix
         ./davmail.nix
@@ -41,7 +40,6 @@
         ./postfix.nix
         ./steam-hardware.nix
         ./xdg.nix
-        inputs.nix-index-database.nixosModules.nix-index
       ]
       else []
     )
@@ -50,11 +48,10 @@
       then [
         ./davmail.nix
         ./dovecot2.nix
+        ./postfix.nix
       ]
       else []
     );
-
-  #    ++ (if hostname == "MORPHEUS-LINUX" then [ ./backups.nix ] else [ ])
 
   boot.kernelParams = ["log_buf_len=10M"];
 
@@ -67,8 +64,8 @@
 
   networking = {
     firewall = {
-      #      trustedInterfaces = [ "tailscale0" ];
-      #      allowedUDPPorts = [ config.services.tailscale.port ];
+      trustedInterfaces = ["tailscale0"];
+      # allowedUDPPorts = [ config.services.tailscale.port ];
     };
   };
 
@@ -110,6 +107,21 @@
 
   services.udev.extraRules = ''
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="5548", ATTRS{idProduct}=="6670", GROUP="users", TAG+="uaccess"
+
+    # XR Glasses Rules:
+    SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="1bbb", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="04d2", MODE="0660", TAG+="uaccess"
+    KERNEL=="uinput", SUBSYSTEM=="misc" MODE="0660", TAG+="uaccess", OPTIONS+="static_node=uinput"
+    SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="35ca", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="usb", KERNEL=="hiddev[0-9]*", ATTRS{idVendor}=="35ca", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="tty", KERNEL=="ttyACM[0-9]*", ATTRS{idVendor}=="35ca", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="hidraw", KERNEL=="hidraw[0-9]*", ATTRS{idVendor}=="35ca", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="3318", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="input", KERNEL=="event[0-9]*", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="sound", KERNEL=="pcmC[0-9]D[0-9]p", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="sound", KERNEL=="controlC[0-9]", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="hidraw", KERNEL=="hidraw[0-9]*", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
+    SUBSYSTEM=="usb", KERNEL=="hiddev[0-9]*", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
   '';
 
   users.mutableUsers = false;
