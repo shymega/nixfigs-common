@@ -5,12 +5,14 @@
 {
   lib,
   libx,
-  hostRoles,
   config,
   ...
 }:
-with lib; let
-  enabled = libx.roleUtils.checkRoles ["gaming" "steam-deck" "jovian"] hostRoles;
+with lib;
+let
+  inherit (libx.roleUtils) checkRoles;
+  inherit (config.nixfigs.meta) rolesEnabled;
+  enabled = roleUtils.checkRoles ["gaming" "steam-deck" "jovian"] config.nixfigs.meta.rolesEnabled;
 in {
   config = mkIf enabled {
     hardware.steam-hardware.enable = true;
