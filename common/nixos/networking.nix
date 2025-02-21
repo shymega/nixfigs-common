@@ -46,7 +46,8 @@ in {
   };
 
   networking.extraHosts = ''
-    192.168.8.1 router.mudi-01.ext-wifi.rnet.rodriguez.org.uk
+    192.168.8.1 router-int.mudi-01.ext-wifi.rnet.rodriguez.org.uk
+    172.28.13.63 oauth2-mail-proxy.delta-zero.rodriguez.org.uk
   '';
 
   programs.nm-applet = {

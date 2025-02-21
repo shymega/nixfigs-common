@@ -2,4 +2,17 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 #
-{hardware.steam-hardware.enable = true;}
+{
+  lib,
+  libx,
+  hostRoles,
+  config,
+  ...
+}:
+with lib; let
+  enabled = libx.roleUtils.checkRoles ["gaming" "steam-deck" "jovian"] hostRoles;
+in {
+  config = mkIf enabled {
+    hardware.steam-hardware.enable = true;
+  };
+}
