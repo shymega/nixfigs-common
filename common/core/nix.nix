@@ -142,7 +142,7 @@ in {
         automatic = true;
         dates = ["06:00"];
       };
-      package = pkgs.lix;
+      package = pkgs.nix;
       nixPath = options.nix.nixPath.default; # ++ [ "nixpkgs-overlays=/etc/nix/overlays-compat/" ];
       gc = {
         automatic = true;
