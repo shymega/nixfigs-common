@@ -15,6 +15,19 @@ in
     group = "users";
     mailLocation = "maildir:${userHome}/.mail/%d/%u/:LAYOUT=fs:INBOX=${userHome}/.mail/%d/%u/INBOX";
     enablePAM = false;
+    sieve.globalExtensions = [
+      "body"
+      "copy"
+      "date"
+      "editheader"
+      "envelope"
+      "fileinto"
+      "imap4flags"
+      "include"
+      "mailbox"
+      "regex"
+      "variables"
+    ];
     enableImap = true;
     enablePop3 = false;
     extraConfig = ''

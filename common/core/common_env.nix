@@ -8,8 +8,8 @@
 {
   environment = {
     variables = {
-      TERMINAL = "${pkgs.lib.getExe alacritty}";
-      EDITOR = "${pkgs.lib.getExe' emacs "emacsclient"}";
+      TERMINAL = "${pkgs.lib.getExe pkgs.alacritty}";
+      EDITOR = "${pkgs.lib.getExe' pkgs.emacs "emacsclient"}";
       VISUAL = "$EDITOR";
       GIT_EDITOR = "$EDITOR";
       SUDO_EDITOR = "$EDITOR";
