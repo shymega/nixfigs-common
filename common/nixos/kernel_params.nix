@@ -4,13 +4,15 @@
 #
 {lib, ...}: {
   boot.kernelParams = lib.mkAfter [
+    "boot.shell_on_fail"
     "loglevel=3"
     "quiet"
-    "rd.udev.log_level=3"
-    "splash"
-    "systemd.show_status=auto"
+    "systemd.show_status=false"
     "systemd.unified_cgroup_hierarchy=1"
-    "mitigations=off"
+    "udev.log_level=3"
+    "udev.log_priority=3"
+    "rhgb"
+    "splash"
   ];
   boot.kernel.sysctl."kernel.sysrq" = 1;
 }
