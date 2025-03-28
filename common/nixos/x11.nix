@@ -68,6 +68,7 @@ in {
     };
     environment.etc."greetd/environments".text = ''
       ${sway-wrapped-hw}
+      ${pkgs.hyprland}/bin/Hyprland
       ${getExe pkgs.dwl}
       startplasma-wayland
       startplasma-x11
