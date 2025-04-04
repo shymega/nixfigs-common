@@ -60,8 +60,8 @@ in {
           sshUser = "${config.networking.hostName}-build-client";
           systems = [
             "aarch64-linux"
+            "armv7l-linux"
             "i686-linux"
-            "armv7-linux"
             "x86_64-linux"
           ];
           maxJobs = 4;
