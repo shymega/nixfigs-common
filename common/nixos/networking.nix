@@ -12,7 +12,7 @@
   ...
 }: let
   inherit (libx) isNixOS;
-  inherit (pkgs.lib) optionals hasSuffix optionalAttrs;
+  inherit (pkgs.lib) optionals hasSuffix;
 in {
   networking.networkmanager = {
     dns = "systemd-resolved";
@@ -23,10 +23,6 @@ in {
     ensureProfiles.profiles =
       inputs.nixfigs-networks.networks.all
       // inputs.nixfigs-networks.networks.work
-      // optionalAttrs (
-        config.networking.hostName == "MORPHEUS-LINUX"
-      )
-      inputs.nixfigs-networks.networks.wwan
       // inputs.nixfigs-networks.networks.fly-io;
     wifi.macAddress = "stable-ssid";
     wifi.scanRandMacAddress = true;
