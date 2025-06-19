@@ -9,11 +9,11 @@
   ...
 }: let
   inherit (config.networking) hostName;
-  inherit (lib) getExe';
+  inherit (lib) getExe getExe' optionalAttrs;
 in {
   systemd = {
     services = {
-      desktop-power-maximum-tdp = lib.mkIf (hostName == "NEO-LINUX" || hostName == "MORPHEUS-LINUX" || hostName == "DEUSEX-LINUX") {
+      power-maximum-tdp = optionalAttrs (hostName == "NEO-LINUX" || hostName == "MORPHEUS-LINUX" || hostName == "DEUSEX-LINUX") {
         description = "Change TDP to maximum TDP when on AC power";
         wantedBy = [
           "multi-user.target"
@@ -26,11 +26,11 @@ in {
         path = with pkgs; [ryzenadj];
         serviceConfig.Type = "oneshot";
         script = ''
-          ryzenadj --tctl-temp=97 --stapm-limit=25000 --fast-limit=25000 --stapm-time=500 --slow-limit=25000 --slow-time=30 --vrmmax-current=70000
+          ${getExe pkgs.ryzenadj} --tctl-temp=97 --stapm-limit=25000 --fast-limit=25000 --slow-limit=25000 --vrmmax-current=25000
         '';
       };
 
-      portable-power-saving-tdp = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "DEUSEX-LINUX") {
+      power-saving-tdp = optionalAttrs (hostName == "MORPHEUS-LINUX" || hostName == "DEUSEX-LINUX") {
         description = "Change TDP to power saving TDP when on battery power";
         wantedBy = ["battery.target"];
         unitConfig = {
@@ -39,24 +39,23 @@ in {
         path = with pkgs; [ryzenadj];
         serviceConfig.Type = "oneshot";
         script = ''
-          ryzenadj --tctl-temp=97 --stapm-limit=7000 --fast-limit=7000 --stapm-time=500 --slow-limit=7000 --slow-time=30 --vrmmax-current=70000
+          ${getExe pkgs.ryzenadj} --tctl-temp=97 --stapm-limit=12000 --fast-limit=12000 --slow-limit=12000 --vrmmax-current=12000
         '';
       };
 
-      powertop = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "TWINS-LINUX" || hostName == "DEUSEX-LINUX") {
+      powertop = optionalAttrs (hostName == "MORPHEUS-LINUX" || hostName == "TWINS-LINUX" || hostName == "DEUSEX-LINUX") {
         description = "Auto-tune Power Management with powertop";
         unitConfig = {
           RefuseManualStart = true;
         };
         wantedBy = [
-          "ac.target"
           "multi-user.target"
           "battery.target"
         ];
         path = with pkgs; [powertop];
         serviceConfig.Type = "oneshot";
         script = ''
-          powertop --auto-tune
+          ${getExe pkgs.powertop} --auto-tune
         '';
       };
 
