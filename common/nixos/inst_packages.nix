@@ -13,7 +13,7 @@
     fuse
     git
     gnupg
-    goimapnotify-patched
+    goimapnotify
     htop
     ifuse
     iw
