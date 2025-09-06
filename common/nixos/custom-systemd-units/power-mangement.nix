@@ -9,11 +9,21 @@
   ...
 }: let
   inherit (config.networking) hostName;
-  inherit (lib) getExe';
+  inherit (lib) getExe getExe' optionalAttrs singleton;
+  amdcpu-adjust = pkgs.writeShellScriptBin "amdcpu-adjust" ''
+    #! ${getExe pkgs.bash}
+
+    WATTAGE=$1
+
+    ${getExe pkgs.ryzenadj} --tctl-temp=97 --stapm-limit="$WATTAGE"000 \
+      --fast-limit="$WATTAGE"000 --slow-limit="$WATTAGE"000 \
+      --vrmmax-current="$WATTAGE"000
+  '';
 in {
+  environment.systemPackages = singleton amdcpu-adjust;
   systemd = {
     services = {
-      desktop-power-maximum-tdp = lib.mkIf (hostName == "NEO-LINUX" || hostName == "MORPHEUS-LINUX" || hostName == "DEUSEX-LINUX") {
+      power-maximum-tdp = optionalAttrs (hostName == "DEUSEX-LINUX") {
         description = "Change TDP to maximum TDP when on AC power";
         wantedBy = [
           "multi-user.target"
@@ -26,11 +36,11 @@ in {
         path = with pkgs; [ryzenadj];
         serviceConfig.Type = "oneshot";
         script = ''
-          ryzenadj --tctl-temp=97 --stapm-limit=25000 --fast-limit=25000 --stapm-time=500 --slow-limit=25000 --slow-time=30 --vrmmax-current=70000
+          ${getExe amdcpu-adjust} 28;
         '';
       };
 
-      portable-power-saving-tdp = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "DEUSEX-LINUX") {
+      power-saving-tdp = optionalAttrs (hostName == "DEUSEX-LINUX") {
         description = "Change TDP to power saving TDP when on battery power";
         wantedBy = ["battery.target"];
         unitConfig = {
@@ -39,24 +49,23 @@ in {
         path = with pkgs; [ryzenadj];
         serviceConfig.Type = "oneshot";
         script = ''
-          ryzenadj --tctl-temp=97 --stapm-limit=7000 --fast-limit=7000 --stapm-time=500 --slow-limit=7000 --slow-time=30 --vrmmax-current=70000
+          ${getExe amdcpu-adjust} 5;
         '';
       };
 
-      powertop = lib.mkIf (hostName == "MORPHEUS-LINUX" || hostName == "TWINS-LINUX" || hostName == "DEUSEX-LINUX") {
+      powertop = optionalAttrs (hostName == "TWINS-LINUX" || hostName == "DEUSEX-LINUX") {
         description = "Auto-tune Power Management with powertop";
         unitConfig = {
           RefuseManualStart = true;
         };
         wantedBy = [
-          "ac.target"
           "multi-user.target"
           "battery.target"
         ];
         path = with pkgs; [powertop];
         serviceConfig.Type = "oneshot";
         script = ''
-          powertop --auto-tune
+          ${getExe pkgs.powertop} --auto-tune
         '';
       };
 
@@ -64,7 +73,7 @@ in {
         description = "Inhibit suspension for one hour";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${getExe' pkgs.systemd "systemd-inhibit"} --what=sleep --why=PreventSuspension --who=system ${getExe' pkgs.toybox "sleep"} %ih";
+          ExecStart = "${getExe' pkgs.systemd "systemd-inhibit"} --what=sleep --why=PreventSuspension --who=system ${getExe' pkgs.coreutils "sleep"} %ih";
         };
       };
     };
