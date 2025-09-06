@@ -4,31 +4,6 @@
 {
   description = "Common settings for my NixOS flakes";
 
-  nixConfig = {
-    extra-trusted-substituters = [
-      "https://cache.dataaturservice.se/spectrum/"
-      "https://cache.nixos.org/"
-      "https://deploy-rs.cachix.org/"
-      "https://devenv.cachix.org"
-      "https://nix-community.cachix.org"
-      "https://nix-gaming.cachix.org"
-      "https://nix-on-droid.cachix.org"
-      "https://numtide.cachix.org"
-      "https://pre-commit-hooks.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "deploy-rs.cachix.org-1:xfNobmiwF/vzvK1gpfediPwpdIP0rpDV2rYqx40zdSI="
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-      "nix-on-droid.cachix.org-1:56snoMJTXmDRC1Ei24CmKoUqvHJ9XCp+nidK7qkMQrU="
-      "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
-      "pre-commit-hooks.cachix.org-1:Pkk3Panw5AW24TOv6kz3PvLhlH8puAsJTBbOPmBo7Rc="
-      "spectrum-os.org-2:foQk3r7t2VpRx92CaXb5ROyy/NBdRJQG2uX2XJMYZfU="
-    ];
-  };
-
   outputs = inputs: let
     inherit (inputs) self;
     genPkgs = system:
@@ -79,7 +54,7 @@
     };
   };
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-shymega.url = "github:shymega/nixpkgs?ref=shymega/staging";
@@ -91,7 +66,7 @@
       flake = false;
     };
     flake-compat = {
-      url = "github:edolstra/flake-compat";
+      url = "github:edolstra/flake-compat?ref=v1.1.0";
       flake = false;
     };
     nix-darwin = {
@@ -103,7 +78,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix = {
-      url = "github:ryantm/agenix";
+      url = "github:ryantm/agenix?ref=0.15.0";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
@@ -111,7 +86,7 @@
       };
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
@@ -122,13 +97,21 @@
         nix-index-database.follows = "nix-index-database";
       };
     };
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.url = "github:numtide/flake-utils?ref=v1.0.0";
     android-nixpkgs = {
       url = "github:tadfisher/android-nixpkgs/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dzr-taskwarrior-recur.url = "github:shymega/dzr-taskwarrior-recur";
-    home-statd.url = "github:shymega/home-statd";
     impermanence.url = "github:nix-community/impermanence";
+    nm2nix.url = "github:Janik-Haag/nm2nix";
+    hyprland = {
+      url = "github:hyprwm/Hyprland?ref=v0.52.0";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland"; # Prevents version mismatch.
+    };
   };
 }

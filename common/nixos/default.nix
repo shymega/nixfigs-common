@@ -14,7 +14,8 @@
     || hostname == "MORPHEUS-LINUX"
     || hostname == "TRINITY-LINUX"
     || hostname == "TWINS-LINUX"
-    || hostname == "DEUSEX-LINUX";
+    || hostname == "DEUSEX-LINUX"
+    || hostname == "THOR-LINUX";
   isDeltaZero =
     hostname
     == "DELTA-ZERO"
@@ -24,7 +25,6 @@ in {
     [
       ./appimage.nix
       ./bluetooth.nix
-      ./custom-systemd-units
       ./fido2.nix
       ./firmware.nix
       ./inst_packages.nix
@@ -38,6 +38,8 @@ in {
       if isPersonal
       then [
         ./automount.nix
+        ./custom-systemd-units
+        ./davmail.nix
         ./dovecot2.nix
         ./graphical.nix
         ./impermanence.nix
@@ -93,7 +95,7 @@ in {
       enable = true;
       settings.PermitRootLogin = lib.mkDefault "no";
     };
-    tailscale.enable = true;
+    tailscale.enable = false;
   };
 
   system = {
@@ -110,23 +112,10 @@ in {
     };
   };
 
+  services.udev.packages = with pkgs; [xrlinuxdriver];
+
   services.udev.extraRules = ''
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="5548", ATTRS{idProduct}=="6670", GROUP="users", TAG+="uaccess"
-
-    # XR Glasses Rules:
-    SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="1bbb", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="04d2", MODE="0660", TAG+="uaccess"
-    KERNEL=="uinput", SUBSYSTEM=="misc" MODE="0660", TAG+="uaccess", OPTIONS+="static_node=uinput"
-    SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="35ca", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="usb", KERNEL=="hiddev[0-9]*", ATTRS{idVendor}=="35ca", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="tty", KERNEL=="ttyACM[0-9]*", ATTRS{idVendor}=="35ca", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="hidraw", KERNEL=="hidraw[0-9]*", ATTRS{idVendor}=="35ca", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="3318", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="input", KERNEL=="event[0-9]*", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="sound", KERNEL=="pcmC[0-9]D[0-9]p", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="sound", KERNEL=="controlC[0-9]", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="hidraw", KERNEL=="hidraw[0-9]*", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
-    SUBSYSTEM=="usb", KERNEL=="hiddev[0-9]*", ATTRS{idVendor}=="3318", MODE="0660", TAG+="uaccess"
   '';
 
   users.mutableUsers = false;

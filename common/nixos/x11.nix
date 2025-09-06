@@ -7,19 +7,10 @@
   lib,
   libx,
   config,
+  inputs,
   ...
 }:
 with lib; let
-  swayConfig = pkgs.writeText "greetd-sway-config" ''
-    # `-l` activates layer-shell mode. Notice that `swaymsg exit` will run after gtkgreet.
-    exec "${getExe pkgs.kanshi} -c /etc/greetd/kanshi-config"
-    exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP; ${getExe pkgs.greetd.gtkgreet} -l; swaymsg exit"
-    bindsym Mod4+shift+e exec swaynag \
-      -t warning \
-      -m 'What do you want to do?' \
-      -b 'Poweroff' 'systemctl poweroff' \
-      -b 'Reboot' 'systemctl reboot'
-  '';
   inherit (libx.roleUtils) checkRoles;
   enabled = checkRoles ["workstation"] config.nixfigs.meta.rolesEnabled;
   sway-wrapped-hw = pkgs.writeShellScript "sway-wrapped-hw" ''
@@ -27,6 +18,9 @@ with lib; let
     export WLR_NO_HARDWARE_CURSORS=1
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
+  hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs {
+    inherit (pkgs) mesa;
+  };
 in {
   config = mkIf enabled {
     environment.etc."greetd/kanshi-config" = {
@@ -49,6 +43,7 @@ in {
         };
         desktopManager = {
           gnome.enable = true;
+          cinnamon.enable = true;
         };
         xkb.layout = "us";
       };
@@ -59,20 +54,86 @@ in {
       greetd = {
         enable = true;
         settings = {
-          default_session = {
-            command = "${sway-wrapped-hw} --config ${swayConfig}";
+          default_session = let
+            hyprConfig = pkgs.writeText "greetd-hyprland-config" ''
+              exec-once=${getExe pkgs.kanshi} -c /etc/greetd/kanshi-config
+              exec-once=${getExe pkgs.greetd.regreet}; hyprctl dispatch exit
+              debug {
+                disable_scale_checks = true
+              }
+              misc {
+                disable_hyprland_logo = true
+                disable_splash_rendering = true
+              }
+              ecosystem {
+                no_update_news = true
+                no_donation_nag = true
+              }
+              input {
+                touchdevice {
+                  enabled=true
+                }
+                touchpad {
+                  natural_scroll=false
+                }
+                follow_mouse=1
+                sensitivity=0.500000
+              }
+              monitor=WAYLAND-1,disabled
+              env = AQ_NO_MODIFIERS,1
+              env = GDK_BACKEND,wayland
+              env = GDK_DEBUG,no-portals
+              env = GDK_SCALE,2
+              env = GTK_USE_PORTAL,0
+              env = MOZ_ENABLE_WAYLAND,1
+              env = QT_AUTO_SCREEN_SCALE_FACTOR,1
+              env = QT_ENABLE_HIGHDPI_SCALING,1
+              env = QT_QPA_PLATFORM,wayland;xcb
+              env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
+              env = SDL_VIDEODRIVER,wayland
+              env = XDG_SESSION_TYPE,wayland
+              env = _JAVA_AWT_WM_NONREPARENTING,1
+              cursor {
+                no_hardware_cursors = 1
+              }
+            '';
+          in {
+            command = "${getExe hyprland} --config ${hyprConfig}";
+            user = "greeter";
           };
-          inital_session.user = "dzrodriguez";
         };
       };
     };
     environment.etc."greetd/environments".text = ''
+      ${getExe hyprland}
       ${sway-wrapped-hw}
       ${getExe pkgs.dwl}
-      startplasma-wayland
-      startplasma-x11
-      zsh
+      ${pkgs.kdePackages.plasma-workspace}/bin/startplasma-wayland
+      ${pkgs.kdePackages.plasma-workspace}/bin/startplasma-X11
     '';
-    programs.ssh.askPassword = mkForce "${pkgs.ksshaskpass}/bin/ksshaskpass";
+    programs.regreet = {
+      enable = true;
+      settings = {
+        commands = {
+          reboot = ["loginctl" "reboot"];
+          poweroff = ["loginctl" "poweroff"];
+        };
+        GTK.application_prefer_dark_theme = true;
+        appearance.greeting_msg = "Welcome back to ${config.networking.hostName}!";
+      };
+    };
+    programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
+    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+    environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = let
+      cfg = config.services.xserver.desktopManager.gnome;
+      nixos-background-light = pkgs.nixos-artwork.wallpapers.simple-blue;
+      nixos-background-dark = pkgs.nixos-artwork.wallpapers.simple-dark-gray;
+      flashbackEnabled = cfg.flashback.enableMetacity || lib.length cfg.flashback.customSessions > 0;
+      nixos-gsettings-desktop-schemas = pkgs.gnome.nixos-gsettings-overrides.override {
+        inherit (cfg) extraGSettingsOverrides extraGSettingsOverridePackages favoriteAppsOverride;
+        inherit flashbackEnabled nixos-background-dark nixos-background-light;
+      };
+    in
+      lib.mkForce (pkgs.glib.getSchemaPath nixos-gsettings-desktop-schemas);
   };
 }

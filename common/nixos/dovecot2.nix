@@ -2,7 +2,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 #
-{config, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   userHome = config.users.users.dzrodriguez.home;
 in {
   services.dovecot2 = {
@@ -27,9 +31,15 @@ in {
     enableImap = true;
     enablePop3 = false;
     extraConfig = ''
-      listen = 127.0.0.1, ::1
+      listen = 127.0.0.1, ::1${lib.optionalString (config.networking.hostName == "delta-zero") ", 172.28.13.63"}
       mail_uid = 1000
       mail_gid = 100
+
+      service imap {
+        vsz_limit = 1G
+      }
+
+      default_vsz_limit = 1G
 
       namespace inbox {
           inbox = yes
@@ -40,16 +50,16 @@ in {
             auto = subscribe
           }
 
-          mailbox "Junk Email" {
+          mailbox "Spam" {
             special_use = \Junk
           }
 
-          mailbox "Sent Items" {
+          mailbox "Sent" {
             special_use = \Sent
             auto = subscribe
           }
 
-          mailbox "Deleted Items" {
+          mailbox "Trash" {
             special_use = \Trash
             auto = subscribe
           }
@@ -62,6 +72,8 @@ in {
           driver = static
           args = nopassword
       }
+
+      maildir_broken_filename_sizes = yes
     '';
   };
 }

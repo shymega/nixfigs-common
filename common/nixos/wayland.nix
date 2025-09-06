@@ -8,7 +8,7 @@
     package = pkgs.sway;
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
-      alacritty
+      unstable.alacritty
       clipman
       grim
       kanshi
@@ -19,8 +19,6 @@
       swayidle
       swaylock
       waybar
-      waybar
-      wayland
       wdisplays
       wf-recorder
       wl-clipboard
@@ -32,8 +30,6 @@
       export QT_QPA_PLATFORM=wayland
       export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
       export SDL_VIDEODRIVER=wayland
-      export SSH_ASKPASS="${pkgs.lib.getExe' pkgs.ksshaskpass "ksshaskpass"}";
-      export SUDO_ASKPASS="${pkgs.lib.getExe' pkgs.ksshaskpass "ksshaskpass"}";
       export XDG_CURRENT_DESKTOP=sway
       export XDG_SESSION_TYPE=wayland
       export _JAVA_AWT_WM_NONREPARENTING=1
