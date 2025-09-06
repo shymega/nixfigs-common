@@ -28,9 +28,10 @@
         "/var/spool/mail"
       ]
       ++ lib.optionals
-      (config.networking.hostName == "NEO-LINUX" || config.networking.hostName == "TWINS-LINUX")
+      (config.networking.hostName == "NEO-LINUX" || config.networking.hostName == "DEUSEX-LINUX")
       [
         "/var/lib/AccountsService"
+        "/var/lib/NetworkManager"
         "/var/lib/alsa"
         "/var/lib/bluetooth"
         "/var/lib/cni"
@@ -43,13 +44,13 @@
         "/var/lib/lxc"
         "/var/lib/lxd"
         "/var/lib/machines"
-        "/var/lib/NetworkManager"
         "/var/lib/nixos"
         "/var/lib/ollama -> private/ollama"
         "/var/lib/os-prober"
         "/var/lib/postfix"
         "/var/lib/power-profiles-daemon"
         "/var/lib/private"
+        "/var/lib/regreet"
         "/var/lib/systemd"
         "/var/lib/upower"
         "/var/lib/wayland"
