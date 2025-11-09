@@ -2,15 +2,19 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 {pkgs, ...}: {
-  environment.systemPackages = [
-    (pkgs.writeScriptBin "clean-syncthing" ''
-      #! ${pkgs.stdenv.shell}
+  environment.systemPackages = let
+    inherit (pkgs.lib) getExe';
+    inherit (pkgs) coreutils writeScriptBin;
+    inherit (pkgs.stdenv) shell;
+  in [
+    (writeScriptBin "clean-syncthing" ''
+      #! ${shell}
       set -eu
 
-      ${pkgs.lib.getExe' pkgs.coreutils "find"} /home/dzr/{Documents,Multimedia,projects} -type f -iname "*sync-conflict*" -print -delete
-      ${pkgs.lib.getExe' pkgs.coreutils "find"} /home/dzr/{Documents,Multimedia,projects} -type f -iname ".#*" -print -delete
-      ${pkgs.lib.getExe' pkgs.coreutils "find"} /home/dzr/{Documents,Multimedia,projects} -type f -iname "*~*" -print -delete
-      ${pkgs.lib.getExe' pkgs.coreutils "find"} /home/dzr/{Documents,Multimedia,projects} -type f -iname ".syncthing*" -print -delete
+      ${getExe' coreutils "find"} /home/dzr/{Documents,Multimedia,projects} -type f -iname "*sync-conflict*" -print -delete
+      ${getExe' coreutils "find"} /home/dzr/{Documents,Multimedia,projects} -type f -iname ".#*" -print -delete
+      ${getExe' coreutils "find"} /home/dzr/{Documents,Multimedia,projects} -type f -iname "*~*" -print -delete
+      ${getExe' coreutils "find"} /home/dzr/{Documents,Multimedia,projects} -type f -iname ".syncthing*" -print -delete
     '')
   ];
 }
