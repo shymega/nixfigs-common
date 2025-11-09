@@ -59,20 +59,20 @@
         network-work.target
     '')
     (writeScriptBin "systemctl-user-action" ''
-     #! ${shell}
+      #! ${shell}
 
-     set -eu
+      set -eu
 
-     USER=''${1:-dzrodriguez}
-     ACTION=''${2:-status}
-     UNIT=$3
+      USER=''${1:-dzrodriguez}
+      ACTION=''${2:-status}
+      UNIT=$3
 
-     export XDG_RUNTIME_DIR="/run/user/$(${getExe' pkgs.coreutils "id"} -u $USER)"
-     export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+      export XDG_RUNTIME_DIR="/run/user/$(${getExe' pkgs.coreutils "id"} -u $USER)"
+      export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
 
-     [ -z "$UNIT" ] && exit 1
+      [ -z "$UNIT" ] && exit 1
 
-     exec ${getExe pkgs.sudo} -Eu "$USER" sh -c "${getExe' pkgs.systemd "systemctl"} --no-block --user $ACTION $UNIT"
+      exec ${getExe pkgs.sudo} -Eu "$USER" sh -c "${getExe' pkgs.systemd "systemctl"} --no-block --user $ACTION $UNIT"
     '')
     (writeScriptBin "flush-postfix" ''
       #! ${shell}
@@ -80,7 +80,7 @@
       set -eu
 
       exec ${getExe pkgs.sudo} ${getExe' pkgs.postfix "postsuper"} -H ALL \
-        ${getExe' pkgs.postfix "postfix" flush}
+        ${getExe' pkgs.postfix "postfix"} flush
     '')
   ];
 }
