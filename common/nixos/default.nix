@@ -6,6 +6,7 @@
   lib,
   pkgs,
   hostname,
+  config,
   ...
 }: let
   isPersonal =
@@ -72,7 +73,7 @@ in {
   networking = {
     firewall = {
       trustedInterfaces = ["tailscale0"];
-      # allowedUDPPorts = [ config.services.tailscale.port ];
+      allowedUDPPorts = [config.services.tailscale.port];
     };
   };
 
@@ -95,7 +96,7 @@ in {
       enable = true;
       settings.PermitRootLogin = lib.mkDefault "no";
     };
-    tailscale.enable = false;
+    tailscale.enable = true;
   };
 
   system = {
