@@ -45,9 +45,9 @@
       "rodriguez.org.uk"
       "shymega.org.uk"
     ];
-    extraConfig = ''
-      smtp_generic_maps = hash:/etc/postfix/generic
-    '';
+    settings.main = {
+      smtp_generic_maps = "hash:/etc/postfix/generic";
+    };
     networks = [
       "127.0.0.0/8"
       "[::1]/128"
