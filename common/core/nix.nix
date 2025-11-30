@@ -28,7 +28,7 @@ in {
         ServerAliveInterval 60
         IPQoS throughput
         ${
-        if libx.hasSuffix "-darwin" pkgs.system
+        if libx.hasSuffix "-darwin" pkgs.stdenv.hostPlatform.system
         then
           if
             builtins.pathExists "${
