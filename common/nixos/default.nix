@@ -113,8 +113,6 @@ in {
     };
   };
 
-  services.udev.packages = with pkgs; [xrlinuxdriver];
-
   services.udev.extraRules = ''
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="5548", ATTRS{idProduct}=="6670", GROUP="users", TAG+="uaccess"
   '';
