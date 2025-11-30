@@ -1,11 +1,7 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-{
-  lib,
-  config,
-  ...
-}:
+{lib, ...}:
 with lib; {
   config = mkIf false {
     services.pantalaimon-headless.instances.rnetMatrix = {

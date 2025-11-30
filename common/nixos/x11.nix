@@ -43,7 +43,6 @@ in {
         };
         desktopManager = {
           gnome.enable = true;
-          cinnamon.enable = true;
         };
         xkb.layout = "us";
       };
@@ -57,7 +56,7 @@ in {
           default_session = let
             hyprConfig = pkgs.writeText "greetd-hyprland-config" ''
               exec-once=${getExe pkgs.kanshi} -c /etc/greetd/kanshi-config
-              exec-once=${getExe pkgs.greetd.regreet}; hyprctl dispatch exit
+              exec-once=${getExe pkgs.regreet}; hyprctl dispatch exit
               debug {
                 disable_scale_checks = true
               }
@@ -124,16 +123,5 @@ in {
     };
     programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
-    environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = let
-      cfg = config.services.xserver.desktopManager.gnome;
-      nixos-background-light = pkgs.nixos-artwork.wallpapers.simple-blue;
-      nixos-background-dark = pkgs.nixos-artwork.wallpapers.simple-dark-gray;
-      flashbackEnabled = cfg.flashback.enableMetacity || lib.length cfg.flashback.customSessions > 0;
-      nixos-gsettings-desktop-schemas = pkgs.gnome.nixos-gsettings-overrides.override {
-        inherit (cfg) extraGSettingsOverrides extraGSettingsOverridePackages favoriteAppsOverride;
-        inherit flashbackEnabled nixos-background-dark nixos-background-light;
-      };
-    in
-      lib.mkForce (pkgs.glib.getSchemaPath nixos-gsettings-desktop-schemas);
   };
 }
