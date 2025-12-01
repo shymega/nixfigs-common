@@ -4,7 +4,6 @@
 #
 {
   lib,
-  pkgs,
   hostname,
   config,
   ...
@@ -99,14 +98,7 @@ in {
     tailscale.enable = true;
   };
 
-  system = {
-    extraSystemBuilderCmds = ''
-      ln -sv ${pkgs.path} $out/nixpkgs
-    '';
-  };
-
   systemd = {
-    network.wait-online.anyInterface = false;
     services.tailscaled = {
       after = ["network-online.target"];
       wants = ["network-online.target"];

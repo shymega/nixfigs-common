@@ -27,7 +27,7 @@
     extraAliases = ''
       postmaster: root
       root: dzodriguez
-      root: noreply+${config.networking.hostName}@rodriguez.org.uk
+      root: noreply+${config.networking.hostName}@devices.rnet.rodriguez.org.uk
     '';
     extraHeaderChecks = ''
       /^Date:/i PREPEND x-ms-reactions: disallow
@@ -41,18 +41,8 @@
       @localdomain.local dominic.rodriguez@rodriguez.org.uk
       @rodriguez.org.uk dominic.rodriguez@rodriguez.org.uk
     '';
-    relayDomains = [
-      "rodriguez.org.uk"
-      "shymega.org.uk"
-    ];
     settings.main = {
       smtp_generic_maps = "hash:/etc/postfix/generic";
-    };
-    networks = [
-      "127.0.0.0/8"
-      "[::1]/128"
-    ];
-    config = {
       smtp_sender_dependent_authentication = "yes";
       smtp_sasl_mechanism_filter = "plain";
       sender_dependent_default_transport_maps = "hash:/etc/postfix/sender_relay";
@@ -62,6 +52,14 @@
       smtp_tls_mandatory_protocols = "!SSLv2, !TLSv1, !TLSv1.1";
       smtp_sasl_security_options = "noanonymous";
       smtp_use_tls = "yes";
+      relayDomains = [
+        "rodriguez.org.uk"
+        "shymega.org.uk"
+      ];
+      mynetworks = [
+        "127.0.0.0/8"
+        "[::1]/128"
+      ];
     };
   };
 }

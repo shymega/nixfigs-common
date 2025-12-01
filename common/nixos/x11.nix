@@ -36,13 +36,6 @@ in {
         enable = true;
         displayManager = {
           startx.enable = true;
-          gdm = {
-            enable = false;
-            autoSuspend = false;
-          };
-        };
-        desktopManager = {
-          gnome.enable = true;
         };
         xkb.layout = "us";
       };
