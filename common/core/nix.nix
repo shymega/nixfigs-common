@@ -53,7 +53,7 @@ in {
 
   nix =
     {
-      distributedBuilds = true;
+      distributedBuilds = false;
       buildMachines = [
         {
           hostName = "eu.nixbuild.net";
@@ -89,7 +89,6 @@ in {
           "https://numtide.cachix.org/?priority=16"
           "https://pre-commit-hooks.cachix.org/?priority=16"
           "https://hyprland.cachix.org?priority=16"
-          "ssh://eu.nixbuild.net?priority=20"
         ];
         trusted-public-keys = lib.mkForce [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
