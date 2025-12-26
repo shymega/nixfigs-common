@@ -133,7 +133,6 @@ in {
         automatic = true;
         dates = ["06:00"];
       };
-      package = pkgs.nix;
       nixPath = options.nix.nixPath.default ++ lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       gc = {
         automatic = true;
