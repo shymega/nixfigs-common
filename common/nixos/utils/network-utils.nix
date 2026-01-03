@@ -79,8 +79,8 @@
 
       set -eu
 
-      exec ${getExe pkgs.sudo} ${getExe' pkgs.postfix "postsuper"} -H ALL \
-        ${getExe' pkgs.postfix "postfix"} flush
+      ${getExe pkgs.sudo} ${getExe' pkgs.postfix "postsuper"} -H ALL
+      ${getExe pkgs.sudo} ${getExe' pkgs.postfix "postfix"} flush
     '')
   ];
 }
