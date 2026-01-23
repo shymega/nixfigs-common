@@ -106,7 +106,7 @@
     impermanence.url = "github:nix-community/impermanence";
     nm2nix.url = "github:Janik-Haag/nm2nix";
     hyprland = {
-      url = "github:hyprwm/Hyprland?ref=v0.53.2";
+      url = "github:shymega/Hyprland?ref=shymega/apply-nix-glaze-patch";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     hyprland-plugins = {
