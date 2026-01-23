@@ -28,7 +28,7 @@
         "/var/spool/mail"
       ]
       ++ lib.optionals
-      (config.networking.hostName == "NEO-LINUX" || config.networking.hostName == "DEUSEX-LINUX" || config.networking.hostName == "THOR-LINUX")
+      (config.networking.hostName == "NEO-LINUX" || config.networking.hostName == "DEUSEX-LINUX" || config.networking.hostName == "THOR-LINUX" || config.networking.hostName == "MJOLNIR-LINUX")
       [
         "/var/lib/AccountsService"
         "/var/lib/NetworkManager"
