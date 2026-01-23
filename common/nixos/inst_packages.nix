@@ -7,7 +7,6 @@
     acpi
     aria2
     curl
-    ddcutil
     encfs
     fido2luks
     fuse
