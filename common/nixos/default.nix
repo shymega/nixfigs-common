@@ -15,7 +15,8 @@
     || hostname == "TRINITY-LINUX"
     || hostname == "TWINS-LINUX"
     || hostname == "DEUSEX-LINUX"
-    || hostname == "THOR-LINUX";
+    || hostname == "THOR-LINUX"
+    || hostname == "MJOLNIR-LINUX";
   isDeltaZero =
     hostname
     == "DELTA-ZERO"
