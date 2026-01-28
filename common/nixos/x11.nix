@@ -18,9 +18,14 @@ with lib; let
     export WLR_NO_HARDWARE_CURSORS=1
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
-  hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs {
-    inherit (pkgs) mesa;
-  };
+  hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland.overrideAttrs (_oldAttrs: {
+    patches = [
+      (pkgs.fetchpatch {
+        url = "https://gist.githubusercontent.com/shymega/6da41e750cf9da0042afd4ac82916874/raw/0a44703af7592bbdb835759419ddf25188ccac4b/0001-hyprpm-Apply-patch-for-glaze.patch";
+        hash = "sha256-SnoHXUx6AvhbzvKVck647lDawMOfx865/t92vYkwZ+I=";
+      })
+    ];
+  });
 in {
   config = mkIf enabled {
     environment.etc."greetd/kanshi-config" = {
