@@ -102,7 +102,7 @@ in {
       };
     };
     environment.etc."greetd/environments".text = ''
-      ${getExe' hyprland "start-hyprland"} 
+      ${getExe' hyprland "start-hyprland"}
       ${sway-wrapped-hw}
       ${getExe pkgs.dwl}
       ${pkgs.kdePackages.plasma-workspace}/bin/startplasma-wayland
