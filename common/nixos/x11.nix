@@ -95,14 +95,14 @@ in {
               }
             '';
           in {
-            command = "${getExe hyprland} --config ${hyprConfig}";
+            command = "${getExe' hyprland "start-hyprland"} -- --config ${hyprConfig}";
             user = "greeter";
           };
         };
       };
     };
     environment.etc."greetd/environments".text = ''
-      ${getExe hyprland}
+      ${getExe' hyprland "start-hyprland"}
       ${sway-wrapped-hw}
       ${getExe pkgs.dwl}
       ${pkgs.kdePackages.plasma-workspace}/bin/startplasma-wayland
