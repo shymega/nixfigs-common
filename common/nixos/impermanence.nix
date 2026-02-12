@@ -45,7 +45,6 @@
         "/var/lib/lxd"
         "/var/lib/machines"
         "/var/lib/nixos"
-        "/var/lib/ollama -> private/ollama"
         "/var/lib/os-prober"
         "/var/lib/postfix"
         "/var/lib/power-profiles-daemon"
