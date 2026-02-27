@@ -106,11 +106,11 @@
     impermanence.url = "github:nix-community/impermanence";
     nm2nix.url = "github:Janik-Haag/nm2nix";
     hyprland = {
-      url = "github:hyprwm/Hyprland?ref=v0.53.3";
+      url = "github:hyprwm/Hyprland?ref=v0.54.0";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
+      url = "github:hyprwm/hyprland-plugins?ref=v0.53.0";
       inputs.hyprland.follows = "hyprland"; # Prevents version mismatch.
     };
   };
