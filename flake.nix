@@ -106,7 +106,7 @@
     impermanence.url = "github:nix-community/impermanence";
     nm2nix.url = "github:Janik-Haag/nm2nix";
     hyprland = {
-      url = "github:hyprwm/Hyprland?rev=8726a7363eb9213235e6e23657668e0daac39a5b";
+      url = "github:hyprwm/Hyprland?tag=v0.54.2";
     };
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins?ref=v0.53.0";
