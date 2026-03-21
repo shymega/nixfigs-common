@@ -83,15 +83,17 @@ in {
         ];
         sandbox = isForeignNix || isNixOS;
         substituters = lib.mkForce [
-          "https://attic.xuyh0120.win/lantian"
+          "https://attic.xuyh0120.win/lantian?priority=10"
           "https://cache.nixos.org/?priority=5"
-          "https://hyprland.cachix.org"
+          "https://hyprland.cachix.org?priority=10"
+          "https://install.determinate.systems?priority=4"
           "https://nix-community.cachix.org/?priority=10"
-          "https://numtide.cachix.org/?priority=16"
-          "https://pre-commit-hooks.cachix.org/?priority=16"
+          "https://numtide.cachix.org/?priority=10"
+          "https://pre-commit-hooks.cachix.org/?priority=10"
           "ssh://eu.nixbuild.net?priority=50"
         ];
         trusted-public-keys = lib.mkForce [
+          "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
