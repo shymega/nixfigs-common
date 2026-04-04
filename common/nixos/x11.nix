@@ -29,13 +29,24 @@ in {
     };
 
     services = {
-      displayManager.defaultSession = "sway";
       xserver = {
         enable = true;
         displayManager = {
           startx.enable = true;
         };
         xkb.layout = "us";
+      };
+      displayManager = {
+        sessionPackages = [
+          (pkgs.sway.overrideAttrs (finalAttrs: {
+            fixupPhase = ''
+              substituteInPlace $out/share/wayland-sessions/sway.desktop \
+                --replace-fail \
+                "Exec=sway"
+                "Exec=${sway-wrapped-hw}"
+            '';
+          }))
+        ];
       };
       desktopManager = {
         plasma6.enable = true;
