@@ -38,7 +38,7 @@ in {
       };
       displayManager = {
         sessionPackages = [
-          (pkgs.sway.overrideAttrs (finalAttrs: {
+          (pkgs.sway.overrideAttrs (_finalAttrs: {
             fixupPhase = ''
               substituteInPlace $out/share/wayland-sessions/sway.desktop \
                 --replace-fail \
