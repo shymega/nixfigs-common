@@ -47,7 +47,7 @@ in {
           default_session = let
             hyprConfig = pkgs.writeText "greetd-hyprland-config" ''
               exec-once=${getExe pkgs.kanshi} -c /etc/greetd/kanshi-config
-              exec-once=${getExe pkgs.greetd.gtkgreet} -l; hyprctl dispatch exit
+              exec-once=${getExe pkgs.regreet}; hyprctl dispatch exit
               debug {
                 disable_scale_checks = true
               }
