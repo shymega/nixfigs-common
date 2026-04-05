@@ -52,7 +52,7 @@ in {
 
   nix =
     {
-      distributedBuilds = true;
+      distributedBuilds = false;
       buildMachines = [
         {
           hostName = "eu.nixbuild.net";
@@ -90,7 +90,7 @@ in {
           "https://nix-community.cachix.org/?priority=10"
           "https://numtide.cachix.org/?priority=10"
           "https://pre-commit-hooks.cachix.org/?priority=10"
-          "ssh://eu.nixbuild.net?priority=50"
+          # "ssh://eu.nixbuild.net?priority=50"
         ];
         trusted-public-keys = lib.mkForce [
           "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
