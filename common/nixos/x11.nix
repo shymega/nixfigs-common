@@ -13,8 +13,8 @@
 with lib; let
   inherit (libx.roleUtils) checkRoles;
   enabled = checkRoles ["workstation"] config.nixfigs.meta.rolesEnabled;
-  sway-wrapped-hw = pkgs.writeShellScript "sway-wrapped-hw" ''
-    #!/bin/sh
+  sway-wrapped-hw = pkgs.writeScript "sway-wrapped-hw" ''
+    #!${pkgs.runtimeShell}
     export WLR_NO_HARDWARE_CURSORS=1
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
@@ -37,15 +37,20 @@ in {
         xkb.layout = "us";
       };
       displayManager = {
-        sessionPackages = [
-          (pkgs.sway.overrideAttrs (_finalAttrs: {
-            fixupPhase = ''
-              substituteInPlace $out/share/wayland-sessions/sway.desktop \
-                --replace-fail \
-                "Exec=sway" \
-                "Exec=${sway-wrapped-hw}"
-            '';
-          }))
+        sessionPackages = let
+          swayUnsupportedSession =
+            (pkgs.makeDesktopItem {
+              name = "sway-unsupported";
+              desktopName = "Sway (Unsupported GPU)";
+              comment = "Start Sway with --unsupported-gpu";
+              exec = sway-wrapped-hw;
+              type = "Application";
+              destination = "/share/wayland-sessions";
+            }).overrideAttrs (_old: {
+              passthru.providedSessions = ["sway-unsupported"];
+            });
+        in [
+          swayUnsupportedSession
         ];
       };
       desktopManager = {
@@ -56,6 +61,7 @@ in {
         enable = true;
         settings = {
           default_session = let
+            isMjolnir = config.networking.hostName == "MJOLNIR-LINUX";
             hyprConfig = pkgs.writeText "greetd-hyprland-config" ''
               exec-once=${getExe pkgs.kanshi} -c /etc/greetd/kanshi-config
               exec-once=${getExe pkgs.regreet}; hyprctl dispatch exit
@@ -73,7 +79,7 @@ in {
               }
               input {
                 touchdevice {
-                  enabled=true
+                  enabled=false
                 }
                 touchpad {
                   natural_scroll=false
@@ -95,6 +101,13 @@ in {
               env = SDL_VIDEODRIVER,wayland
               env = XDG_SESSION_TYPE,wayland
               env = _JAVA_AWT_WM_NONREPARENTING,1
+              ${
+                lib.optionalString isMjolnir
+                ''
+                  env = LIBVA_DRIVER_NAME,nvidia
+                  env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+                ''
+              }
               cursor {
                 no_hardware_cursors = 1
               }
