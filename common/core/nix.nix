@@ -125,6 +125,21 @@ in {
         max-free = ${toString (1024 * 1024 * 1024)}
         !include ${config.age.secrets.nix_conf_access_tokens.path}
       '';
+      package = let
+        determinateNixPkg = let
+          inherit (inputs.determinate.inputs.nix.packages.${pkgs.stdenv.hostPlatform.system}) default;
+          detnixPatch = pkgs.fetchpatch {
+            url = "https://github.com/user-attachments/files/27144728/detnix.patch";
+            hash = "sha256-oEeOigJJrT4vVKkGddqwpjhT+6b/pJC/7GPbe2G2OAs=";
+          };
+        in
+          (default.appendPatches [
+            detnixPatch
+          ]).overrideAttrs (oldAttrs: {
+            doCheck = false;
+          });
+      in
+        lib.mkForce determinateNixPkg;
       registry =
         {
           n.flake = inputs.nixpkgs;
