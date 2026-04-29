@@ -12,7 +12,8 @@
     hostname
     == "NEO-LINUX"
     || hostname == "DEUSEX-LINUX"
-    || hostname == "MJOLNIR-LINUX";
+    || hostname == "MJOLNIR-LINUX"
+    || hostname == "MORPHEUS-LINUX";
   isDeltaZero = hostname == "delta-zero";
 in {
   imports =

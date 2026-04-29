@@ -135,7 +135,7 @@ in {
         in
           (default.appendPatches [
             detnixPatch
-          ]).overrideAttrs (oldAttrs: {
+          ]).overrideAttrs (_oldAttrs: {
             doCheck = false;
           });
       in
