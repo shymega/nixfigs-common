@@ -81,7 +81,7 @@ in {
           "root"
           "@wheel"
         ];
-        sandbox = isForeignNix || isNixOS;
+        sandbox = true;
         substituters = lib.mkForce [
           "https://attic.xuyh0120.win/lantian?priority=10"
           "https://cache.nixos.org/?priority=5"
@@ -90,7 +90,7 @@ in {
           "https://nix-community.cachix.org/?priority=10"
           "https://numtide.cachix.org/?priority=10"
           "https://pre-commit-hooks.cachix.org/?priority=10"
-          # "ssh://eu.nixbuild.net/?priority=50"
+          "ssh://eu.nixbuild.net?priority=50"
         ];
         trusted-public-keys = lib.mkForce [
           "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
@@ -133,11 +133,9 @@ in {
             hash = "sha256-oEeOigJJrT4vVKkGddqwpjhT+6b/pJC/7GPbe2G2OAs=";
           };
         in
-          (default.appendPatches [
+          default.appendPatches [
             detnixPatch
-          ]).overrideAttrs (_oldAttrs: {
-            doCheck = false;
-          });
+          ];
       in
         lib.mkForce determinateNixPkg;
       registry =
