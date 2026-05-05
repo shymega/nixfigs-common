@@ -81,7 +81,7 @@ in {
           "root"
           "@wheel"
         ];
-        sandbox = isForeignNix || isNixOS;
+        sandbox = true;
         substituters = lib.mkForce [
           "https://attic.xuyh0120.win/lantian?priority=10"
           "https://cache.nixos.org/?priority=5"
