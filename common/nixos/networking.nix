@@ -41,7 +41,7 @@ in {
 
   networking.extraHosts = ''
     192.168.8.1 gl-inet.routers.rnet.rodriguez.org.uk
-    172.28.13.63 mail.delta-zero.rodriguez.org.uk taskd.shymega.org.uk
+    100.70.185.78 mail.delta-zero.rodriguez.org.uk taskd.shymega.org.uk
   '';
 
   programs.nm-applet = {
