@@ -31,7 +31,7 @@ in {
     enableImap = true;
     enablePop3 = false;
     extraConfig = ''
-      listen = 127.0.0.1, ::1${lib.optionalString (config.networking.hostName == "delta-zero") ", 172.28.13.63"}
+      listen = 127.0.0.1, ::1${lib.optionalString (config.networking.hostName == "delta-zero") ", 100.70.185.78"}
       mail_uid = 1000
       mail_gid = 100
 
