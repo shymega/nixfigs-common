@@ -62,8 +62,6 @@ in {
     man.generateCaches = true;
   };
 
-  i18n.defaultLocale = "en_GB.UTF-8";
-
   networking = {
     firewall = {
       trustedInterfaces = ["tailscale0"];
