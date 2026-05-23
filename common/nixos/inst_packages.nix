@@ -3,17 +3,15 @@
 # SPDX-License-Identifier: GPL-3.0-only
 #
 {pkgs, ...}: {
-  environment.systemPackages = with pkgs.unstable;
+  environment.systemPackages = with pkgs;
     [
       acpi
       aria2
       curl
-      encfs
       fido2luks
       fuse
       git
       gnupg
-      goimapnotify
       htop
       ifuse
       iw
@@ -24,13 +22,9 @@
       pciutils
       powertop
       smartmontools
-      solo2-cli
       syncthing
       tmux
       usbutils
       wget
-    ]
-    ++ (with pkgs; [
-      hyprscope
-    ]);
+    ];
 }
