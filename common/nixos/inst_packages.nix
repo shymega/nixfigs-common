@@ -7,6 +7,7 @@
     acpi
     aria2
     curl
+    dovecot_pigeonhole
     fido2luks
     fuse
     git
