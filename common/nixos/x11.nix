@@ -18,7 +18,7 @@ with lib; let
     export WLR_NO_HARDWARE_CURSORS=1
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
-  inherit (inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}) hyprland;
+  inherit (pkgs) hyprland;
 in {
   config = mkIf enabled {
     environment.etc."greetd/kanshi-config" = {
