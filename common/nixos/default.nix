@@ -100,6 +100,13 @@ in {
 
   services.udev.extraRules = ''
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="5548", ATTRS{idProduct}=="6670", GROUP="users", TAG+="uaccess"
+
+    # Block monitor's internal Prolific hub - prevents touchscreen/trackpad from enumerating
+    ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="067b", ATTRS{idProduct}=="2586", ATTR{authorized}="0"
+    # WingCool touchscreen
+    ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="27c6", ATTRS{idProduct}=="0529", ATTR{authorized}="0"
+    # Fake Magic Trackpad (touch pointer device)
+    ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="0265", ATTR{authorized}="0"
   '';
 
   users.mutableUsers = false;
