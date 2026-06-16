@@ -61,7 +61,6 @@
     nixfigs-helpers.url = "github:shymega/nixfigs-helpers";
     nixfigs-pkgs.url = "github:shymega/nixfigs-pkgs";
     nixfigs-networks.url = "github:shymega/nixfigs-networks";
-    nixfigs-work-container.url = "github:shymega/nixfigs-work-container";
     flake-registry = {
       url = "github:NixOS/flake-registry";
       flake = false;
