@@ -6,6 +6,7 @@
   lib,
   hostname,
   config,
+  inputs,
   ...
 }: let
   isPersonal =
