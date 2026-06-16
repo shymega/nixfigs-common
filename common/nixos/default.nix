@@ -145,7 +145,9 @@ in
   // lib.optionalAttrs isWorkPersonal {
     nixfigs.workBrowserContainer = {
       enable = true;
-      embedSecrets = true;
+      embedSecrets = false;
+      vpnConfigPath = config.age.secrets.ct_vpn_config.path;
+      vpnCredentialsPath = config.age.secrets.ct_vpn_creds.path;
       chromiumWorkDomain = "codethink.co.uk";
     };
     environment.systemPackages = with pkgs; [waypipe];
