@@ -7,6 +7,7 @@
   hostname,
   config,
   inputs,
+  pkgs,
   ...
 }: let
   isPersonal =
