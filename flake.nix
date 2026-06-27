@@ -119,14 +119,14 @@
         nixpkgs.follows = "nixpkgs";
         nix-index-database.follows = "nix-index-database";
       };
-    
+
       inputs.flake-compat.follows = "flake-compat";
     };
     flake-utils.url = "github:numtide/flake-utils?ref=v1.0.0";
     android-nixpkgs = {
       url = "github:tadfisher/android-nixpkgs/stable";
       inputs.nixpkgs.follows = "nixpkgs";
-    
+
       inputs.flake-utils.follows = "flake-utils";
     };
     dzr-taskwarrior-recur = {
