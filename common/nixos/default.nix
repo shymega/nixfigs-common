@@ -16,7 +16,6 @@
     || hostname == "DEUSEX-LINUX"
     || hostname == "MJOLNIR-LINUX"
     || hostname == "MORPHEUS-LINUX";
-  isWorkPersonal = hostname == "DEUSEX-LINUX" || hostname == "MJOLNIR-LINUX";
   isDeltaZero = hostname == "delta-zero";
 in
   {
@@ -34,7 +33,7 @@ in
         ./utils
       ]
       ++ (
-        if isWorkPersonal
+        if false
         then
           (with inputs; [
             nixfigs-work-container.nixosModules.default
@@ -142,10 +141,9 @@ in
         };
       };
   }
-  // lib.optionalAttrs isWorkPersonal {
+  // lib.optionalAttrs false {
     nixfigs.workBrowserContainer = {
       enable = true;
-      embedSecrets = false;
       vpnConfigPath = config.age.secrets.ct_vpn_config.path;
       vpnCredentialsPath = config.age.secrets.ct_vpn_creds.path;
       chromiumWorkDomain = "codethink.co.uk";
