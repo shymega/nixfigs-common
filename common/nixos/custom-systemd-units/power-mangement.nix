@@ -15,6 +15,10 @@
 
     WATTAGE=$1
 
+    if [ -z $WATTAGE ]; then
+      echo "Not enough params." && exit 1
+    fi
+
     ${getExe pkgs.ryzenadj} --tctl-temp=97 --stapm-limit="$WATTAGE"000 \
       --fast-limit="$WATTAGE"000 --slow-limit="$WATTAGE"000 \
       --vrmmax-current="$WATTAGE"000
@@ -23,10 +27,9 @@ in {
   environment.systemPackages = singleton amdcpu-adjust;
   systemd = {
     services = {
-      power-maximum-tdp = optionalAttrs (hostName == "DEUSEX-LINUX") {
+      power-maximum-tdp = optionalAttrs (hostName == "DEUSEX-LINUX" || hostName == "MORPHEUS-LINUX" || hostName == "KRATOS-LINUX") {
         description = "Change TDP to maximum TDP when on AC power";
         wantedBy = [
-          "multi-user.target"
           "ac.target"
         ];
         unitConfig = {
@@ -35,25 +38,35 @@ in {
         };
         path = with pkgs; [ryzenadj];
         serviceConfig.Type = "oneshot";
-        script = ''
-          ${getExe amdcpu-adjust} 28;
+        script = let
+          value =
+            {
+              DEUSEX-LINUX = 28;
+              MORPHEUS-LINUX = 18;
+              KRATOS-LINUX = 18;
+            }.${
+              hostName
+            };
+        in ''
+          ${getExe amdcpu-adjust} ${toString value}
         '';
       };
 
-      power-saving-tdp = optionalAttrs (hostName == "DEUSEX-LINUX") {
+      power-saving-tdp = optionalAttrs (hostName == "DEUSEX-LINUX" || hostName == "MORPHEUS-LINUX" || hostName == "KRATOS-LINUX") {
         description = "Change TDP to power saving TDP when on battery power";
         wantedBy = ["battery.target"];
         unitConfig = {
           RefuseManualStart = true;
+          Requires = "battery.target";
         };
         path = with pkgs; [ryzenadj];
         serviceConfig.Type = "oneshot";
         script = ''
-          ${getExe amdcpu-adjust} 5;
+          ${getExe amdcpu-adjust} 12
         '';
       };
 
-      powertop = optionalAttrs (hostName == "TWINS-LINUX" || hostName == "DEUSEX-LINUX") {
+      powertop = optionalAttrs (hostName == "TWINS-LINUX" || hostName == "DEUSEX-LINUX" || hostName == "MORPHEUS-LINUX") {
         description = "Auto-tune Power Management with powertop";
         unitConfig = {
           RefuseManualStart = true;
