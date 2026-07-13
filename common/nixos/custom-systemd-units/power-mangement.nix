@@ -27,7 +27,7 @@ in {
   environment.systemPackages = singleton amdcpu-adjust;
   systemd = {
     services = {
-      power-maximum-tdp = optionalAttrs (hostName == "DEUSEX-LINUX" || hostName == "MORPHEUS-LINUX" || hostName == "KRATOS-LINUX") {
+      power-maximum-tdp = optionalAttrs false {
         description = "Change TDP to maximum TDP when on AC power";
         wantedBy = [
           "ac.target"
@@ -52,7 +52,7 @@ in {
         '';
       };
 
-      power-saving-tdp = optionalAttrs (hostName == "DEUSEX-LINUX" || hostName == "MORPHEUS-LINUX" || hostName == "KRATOS-LINUX") {
+      power-saving-tdp = optionalAttrs false {
         description = "Change TDP to power saving TDP when on battery power";
         wantedBy = ["battery.target"];
         unitConfig = {
