@@ -147,7 +147,7 @@ in {
         }
         // lib.mapAttrs (_: value: {flake = value;}) inputs;
       optimise = {
-        automatic = true;
+        automatic = false;
         dates = ["06:00"];
       };
       nixPath = options.nix.nixPath.default ++ lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
