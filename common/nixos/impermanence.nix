@@ -16,7 +16,6 @@
     directories =
       [
         "/etc/NetworkManager/system-connections"
-        "/etc/secureboot"
         "/opt"
         "/root"
         "/usr/local"
