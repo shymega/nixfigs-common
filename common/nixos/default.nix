@@ -50,7 +50,6 @@ in
           ./dovecot2.nix
           ./graphical.nix
           ./impermanence.nix
-          ./matrix.nix
           ./postfix.nix
           ./steam-hardware.nix
           ./xdg.nix
