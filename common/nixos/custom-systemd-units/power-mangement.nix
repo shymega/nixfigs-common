@@ -26,45 +26,6 @@ in {
   environment.systemPackages = singleton amdcpu-adjust;
   systemd = {
     services = {
-      power-maximum-tdp = optionalAttrs false {
-        description = "Change TDP to maximum TDP when on AC power";
-        wantedBy = [
-          "ac.target"
-        ];
-        unitConfig = {
-          RefuseManualStart = true;
-          Requires = "ac.target";
-        };
-        path = with pkgs; [ryzenadj];
-        serviceConfig.Type = "oneshot";
-        script = let
-          value =
-            {
-              DEUSEX-LINUX = 28;
-              MORPHEUS-LINUX = 18;
-              KRATOS-LINUX = 18;
-            }.${
-              hostName
-            };
-        in ''
-          ${getExe amdcpu-adjust} ${toString value}
-        '';
-      };
-
-      power-saving-tdp = optionalAttrs false {
-        description = "Change TDP to power saving TDP when on battery power";
-        wantedBy = ["battery.target"];
-        unitConfig = {
-          RefuseManualStart = true;
-          Requires = "battery.target";
-        };
-        path = with pkgs; [ryzenadj];
-        serviceConfig.Type = "oneshot";
-        script = ''
-          ${getExe amdcpu-adjust} 12
-        '';
-      };
-
       powertop = optionalAttrs (hostName == "TWINS-LINUX" || hostName == "DEUSEX-LINUX" || hostName == "MORPHEUS-LINUX") {
         description = "Auto-tune Power Management with powertop";
         unitConfig = {
