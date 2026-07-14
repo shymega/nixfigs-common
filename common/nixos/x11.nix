@@ -60,9 +60,8 @@ in {
         settings = {
           default_session = let
             swayConfig = pkgs.writeText "greetd-sway-config" ''
-              # `-l` activates layer-shell mode. Notice that `swaymsg exit` will run after gtkgreet.
               exec "${getExe pkgs.kanshi} -c /etc/greetd/kanshi-config"
-              exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP; ${getExe pkgs.regreet} -l; swaymsg exit"
+              exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP; ${getExe pkgs.regreet}; swaymsg exit"
               bindsym Mod4+shift+e exec swaynag \
               -t warning \
               -m 'What do you want to do?' \
