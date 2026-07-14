@@ -14,7 +14,6 @@
       kanshi
       mako
       slurp
-      slurp
       sway-contrib.grimshot
       swayidle
       swaylock
