@@ -15,7 +15,8 @@
     == "NEO-LINUX"
     || hostname == "DEUSEX-LINUX"
     || hostname == "MJOLNIR-LINUX"
-    || hostname == "MORPHEUS-LINUX";
+    || hostname == "MORPHEUS-LINUX"
+    || hostname == "TWINS-LINUX";
   isWorkPersonal = hostname == "DEUSEX-LINUX" || hostname == "MJOLNIR-LINUX";
   isDeltaZero = hostname == "delta-zero";
 in
