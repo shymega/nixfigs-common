@@ -10,7 +10,7 @@
   options,
   ...
 }: let
-  inherit (libx) isDarwin isForeignNix isNixOS;
+  inherit (libx) isDarwin;
 in {
   environment.etc."nix/overlays-compat/overlays.nix".text = ''
     final: prev:
