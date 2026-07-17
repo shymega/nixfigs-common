@@ -142,7 +142,7 @@ in {
         options = "--delete-older-than 14d";
       };
     }
-    // lib.optionalAttrs (isForeignNix || isNixOS) {
+    // lib.optionalAttrs (!isDarwin) {
       daemonCPUSchedPolicy = "batch";
       daemonIOSchedPriority = 5;
       gc.dates = "06:00";
