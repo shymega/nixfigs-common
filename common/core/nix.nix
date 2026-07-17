@@ -26,7 +26,6 @@ in {
         PubkeyAcceptedKeyTypes ssh-ed25519
         ServerAliveInterval 60
         IdentityFile ${config.age.secrets."nixbuild_ssh_priv_key".path}
-      }
     '';
     knownHosts = {
       nixbuild = {
