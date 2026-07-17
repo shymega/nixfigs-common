@@ -25,21 +25,7 @@ in {
         HostName eu.nixbuild.net
         PubkeyAcceptedKeyTypes ssh-ed25519
         ServerAliveInterval 60
-        IPQoS throughput
-        ${
-        if libx.hasSuffix "-darwin" pkgs.stdenv.hostPlatform.system
-        then
-          if
-            builtins.pathExists "${
-              config.users.users."dzrodriguez".home
-            }/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-          then "IdentityAgent ${
-            config.users.users."dzrodriguez".home
-          }/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-          else "IdentityFile /run/agenix/nixbuild_ssh_priv_key"
-        else if builtins.pathExists "${config.users.users."dzrodriguez".home}/.1password/agent.sock"
-        then "IdentityAgent ${config.users.users."dzrodriguez".home}/.1password/agent.sock"
-        else "IdentityFile /run/agenix/nixbuild_ssh_priv_key"
+        IdentityFile ${config.age.secrets."nixbuild_ssh_priv_key".path}
       }
     '';
     knownHosts = {
