@@ -100,7 +100,10 @@ in
         enable = true;
         settings.PermitRootLogin = lib.mkDefault "no";
       };
-      tailscale.enable = true;
+      tailscale = {
+        enable = true;
+        package = pkgs.unstable.tailscale;
+      };
     };
 
     systemd = {
