@@ -62,13 +62,10 @@
       url = "github:shymega/nixfigs-helpers";
       inputs.agenix.follows = "agenix";
       inputs.flake-compat.follows = "flake-compat";
-      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixfigs-pkgs = {
       url = "github:shymega/nixfigs-pkgs";
-      inputs.android-nixpkgs.follows = "android-nixpkgs";
-      inputs.dzr-taskwarrior-recur.follows = "dzr-taskwarrior-recur";
       inputs.nix-alien.follows = "nix-alien";
       inputs.nixfigs-helpers.follows = "nixfigs-helpers";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -122,26 +119,9 @@
 
       inputs.flake-compat.follows = "flake-compat";
     };
-    flake-utils.url = "github:numtide/flake-utils?ref=v1.0.0";
-    android-nixpkgs = {
-      url = "github:tadfisher/android-nixpkgs/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
-
-      inputs.flake-utils.follows = "flake-utils";
-    };
-    dzr-taskwarrior-recur = {
-      url = "github:shymega/dzr-taskwarrior-recur";
-      inputs.flake-compat.follows = "flake-compat";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     impermanence = {
       url = "github:nix-community/impermanence";
       inputs.home-manager.follows = "home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nm2nix = {
-      url = "github:Janik-Haag/nm2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.follows = "nixfigs-pkgs/hyprnix/hyprland";
