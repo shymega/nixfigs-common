@@ -45,7 +45,6 @@ in
       ++ (
         if isPersonal
         then [
-          ./automount.nix
           ./custom-systemd-units
           ./davmail.nix
           ./dovecot2.nix
