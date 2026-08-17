@@ -125,21 +125,6 @@ in
     programs.nix-ld.enable = true;
     programs.java.binfmt = true;
     services.incron.enable = true;
-    security.pam.services = let
-      inherit (lib) optionalAttrs hasSuffix;
-    in
-      optionalAttrs (hasSuffix "-LINUX" hostname) {
-        login.gnupg = {
-          enable = true;
-          noAutostart = true;
-          storeOnly = true;
-        };
-        greetd.gnupg = {
-          enable = true;
-          noAutostart = true;
-          storeOnly = true;
-        };
-      };
   }
   // lib.optionalAttrs isWorkPersonal {
     nixfigs.workBrowserContainer = {
