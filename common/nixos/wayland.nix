@@ -2,9 +2,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 #
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   programs.sway = {
-    enable = true;
+    enable = config.nixfigs.graphical.windowManagers.selectedWindowManager == "sway";
     package = pkgs.sway;
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
