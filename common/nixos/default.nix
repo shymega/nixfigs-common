@@ -13,11 +13,11 @@
   isPersonal =
     hostname
     == "NEO-LINUX"
-    || hostname == "DEUSEX-LINUX"
+    || hostname == "HEIMDALL-LINUX"
     || hostname == "MJOLNIR-LINUX"
     || hostname == "MORPHEUS-LINUX"
     || hostname == "TWINS-LINUX";
-  isWorkPersonal = hostname == "DEUSEX-LINUX" || hostname == "MJOLNIR-LINUX" || hostname == "MORPHEUS-LINUX";
+  isWorkPersonal = hostname == "HEIMDALL-LINUX" || hostname == "MJOLNIR-LINUX" || hostname == "MORPHEUS-LINUX";
   isDeltaZero = hostname == "delta-zero";
 in
   {
