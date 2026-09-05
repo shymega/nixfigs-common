@@ -26,7 +26,7 @@ in {
   environment.systemPackages = singleton amdcpu-adjust;
   systemd = {
     services = {
-      powertop = optionalAttrs (hostName == "TWINS-LINUX" || hostName == "HEIMDALL-LINUX" || hostName == "MORPHEUS-LINUX") {
+      powertop = optionalAttrs (hostName == "TYR-LINUX" || hostName == "HEIMDALL-LINUX" || hostName == "FREYR-LINUX" || hostName == "LOKI-LINUX" || hostName == "THIRA-LINUX" || hostName == "KRATOS-LINUX") {
         description = "Auto-tune Power Management with powertop";
         unitConfig = {
           RefuseManualStart = true;
