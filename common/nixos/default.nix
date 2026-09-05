@@ -15,8 +15,8 @@
     == "NEO-LINUX"
     || hostname == "HEIMDALL-LINUX"
     || hostname == "MJOLNIR-LINUX"
-    || hostname == "TWINS-LINUX";
     || hostname == "FREYR-LINUX"
+    || hostname == "TYR-LINUX";
   isWorkPersonal = hostname == "HEIMDALL-LINUX" || hostname == "MJOLNIR-LINUX" || hostname == "FREYR-LINUX";
   isDeltaZero = hostname == "delta-zero";
 in
