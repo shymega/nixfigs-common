@@ -12,21 +12,9 @@
     package = pkgs.sway;
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
-      unstable.alacritty
-      clipman
-      grim
-      kanshi
-      mako
-      slurp
-      sway-contrib.grimshot
       swayidle
       swaylock
-      waybar
-      wdisplays
-      wf-recorder
-      wl-clipboard
       wofi
-      xdg-utils
     ];
     extraSessionCommands = ''
       export MOZ_ENABLE_WAYLAND=1
