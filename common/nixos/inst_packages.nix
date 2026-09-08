@@ -26,5 +26,6 @@
     tmux
     usbutils
     wget
+    xdg-utils
   ];
 }
