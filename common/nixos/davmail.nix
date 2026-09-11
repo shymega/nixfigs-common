@@ -1,7 +1,29 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-_: {
+{ pkgs, ... }:
+let
+  acmeCertName = "proxy.m365.rnet.rodriguez.org.uk";
+  acmeCertDir = "/var/lib/acme/${acmeCertName}";
+  keystoreFile = "/var/lib/davmail/keystore.p12";
+
+  # Only re-runs the PKCS#12 conversion when the ACME cert/key have actually
+  # been renewed (i.e. are newer than the keystore we last built).
+  pkcs12Convert = pkgs.writeShellScript "davmail-pkcs12-convert" ''
+    set -euo pipefail
+    key="$CREDENTIALS_DIRECTORY/key.pem"
+    chain="$CREDENTIALS_DIRECTORY/fullchain.pem"
+
+    if [ ! -f "${keystoreFile}" ] || [ "$key" -nt "${keystoreFile}" ]; then
+      ${pkgs.openssl}/bin/openssl pkcs12 -export \
+        -in "$chain" \
+        -inkey "$key" \
+        -out "${keystoreFile}" \
+        -passout pass:
+    fi
+  '';
+in
+{
   services.davmail = {
     enable = true;
     url = "https://outlook.office365.com/EWS/Exchange.asmx";
@@ -42,6 +64,9 @@ _: {
         showStartupBanner = "false";
         smtpPort = "1025";
         smtpSaveInSent = "true";
+        ssl.keystoreFile = keystoreFile;
+        ssl.keystorePass = "";
+        ssl.keystoreType = "PKCS12";
         ssl.nosecurecaldav = "true";
         ssl.nosecureimap = "true";
         ssl.nosecureldap = "true";
@@ -61,11 +86,21 @@ _: {
       };
   };
   systemd.services.davmail = {
+    after = [ "acme-finished-${acmeCertName}.service" ];
+    wants = [ "acme-finished-${acmeCertName}.service" ];
+
     serviceConfig = {
       ReadWritePaths = [
         "/var/log/davmail"
         "/var/lib/davmail"
       ];
+
+      LoadCredential = [
+        "fullchain.pem:${acmeCertDir}/fullchain.pem"
+        "key.pem:${acmeCertDir}/key.pem"
+      ];
+
+      ExecStartPre = "${pkcs12Convert}";
     };
   };
 }
