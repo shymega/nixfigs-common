@@ -48,7 +48,6 @@ in
         if isPersonal
         then [
           ./custom-systemd-units
-          ./davmail.nix
           ./dovecot2.nix
           ./graphical.nix
           ./impermanence.nix
