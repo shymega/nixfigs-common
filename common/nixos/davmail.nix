@@ -8,7 +8,7 @@ _: {
     config.davmail =
       {
         allowRemote = "false";
-        authentication = "O365Interactive";
+        authentication = "O365DeviceCode";
         caldavAutoSchedule = "true";
         caldavEditNotifications = "true";
         caldavImpersonate = "true";
