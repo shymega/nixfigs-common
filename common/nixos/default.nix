@@ -12,8 +12,7 @@
 }: let
   isPersonal =
     hostname
-    == "NEO-LINUX"
-    || hostname == "HEIMDALL-LINUX"
+    == "HEIMDALL-LINUX"
     || hostname == "MJOLNIR-LINUX"
     || hostname == "LOKI-LINUX"
     || hostname == "KRATOS-LINUX"
