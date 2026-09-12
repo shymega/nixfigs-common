@@ -22,6 +22,11 @@
     fi
   '';
 in {
+  security.acme.certs.${acmeCertName} = {
+    group = "acme";
+    reloadServices = [config.systemd.services.davmail.name];
+  };
+
   services.davmail = {
     enable = true;
     url = "https://outlook.office365.com/EWS/Exchange.asmx";
