@@ -1,7 +1,11 @@
 # SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
 #
 # SPDX-License-Identifier: GPL-3.0-only
-{pkgs, config, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
   acmeCertName = "proxy.m365.rnet.rodriguez.org.uk";
   acmeCertDir = "/var/lib/acme/${acmeCertName}";
   keystoreFile = "/var/lib/davmail/keystore.p12";
