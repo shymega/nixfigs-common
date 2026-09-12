@@ -27,7 +27,7 @@
         "/var/spool/mail"
       ]
       ++ lib.optionals
-      (config.networking.hostName == "HEIMDALL-LINUX" || config.networking.hostName == "THOR-LINUX" || config.networking.hostName == "MJOLNIR-LINUX")
+      (config.networking.hostName == "HEIMDALL-LINUX" || config.networking.hostName == "MJOLNIR-LINUX")
       [
         "/var/lib/AccountsService"
         "/var/lib/NetworkManager"
