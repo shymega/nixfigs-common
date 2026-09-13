@@ -36,13 +36,13 @@ in {
     url = "https://outlook.office365.com/EWS/Exchange.asmx";
     config.davmail =
       {
-        allowRemote = "false";
+        allowRemote = "true";
         authentication = "O365DeviceCode";
         caldavAutoSchedule = "true";
         caldavEditNotifications = "true";
         caldavImpersonate = "true";
         caldavPastDelay = "0";
-        caldavPort = "1080";
+        caldavPort = "1043";
         carddavReadPhoto = "true";
         clientSoTimeout = "600";
         disableGuiNotifications = "true";
@@ -52,7 +52,7 @@ in {
         enableKerberos = "false";
         enableProxy = "false";
         folderSizeLimit = "0";
-        forceActiveSyncUpdate = "false";
+        forceActiveSyncUpdate = "true";
         imapAlwaysApproxMsgSize = "true";
         imapAutoExpunge = "true";
         imapIdleDelay = "30";
@@ -74,10 +74,10 @@ in {
         ssl.keystoreFile = keystoreFile;
         ssl.keystorePass = "";
         ssl.keystoreType = "PKCS12";
-        ssl.nosecurecaldav = "true";
-        ssl.nosecureimap = "true";
-        ssl.nosecureldap = "true";
-        ssl.nosecurepop = "true";
+        ssl.nosecurecaldav = "false";
+        ssl.nosecureimap = "false";
+        ssl.nosecureldap = "false";
+        ssl.nosecurepop = "false";
         ssl.nosecuresmtp = "true";
         url = "https://outlook.office365.com/EWS/Exchange.asmx";
         useSystemProxies = "false";
