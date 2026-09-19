@@ -98,6 +98,8 @@ in {
         max-substitution-jobs = 128;
         warn-dirty = false;
         cores = 0;
+        eval-cores = 0;
+        lazy-trees = true;
         max-jobs = "auto";
         system-features = [
           "kvm"
