@@ -58,6 +58,7 @@ in {
       ];
       settings = rec {
         accept-flake-config = true;
+        auto-allocate-uids = true;
         extra-platforms = config.boot.binfmt.emulatedSystems;
         allowed-users = ["@wheel"];
         build-users-group = "nixbld";
@@ -90,6 +91,8 @@ in {
           "pre-commit-hooks.cachix.org-1:Pkk3Panw5AW24TOv6kz3PvLhlH8puAsJTBbOPmBo7Rc="
         ];
         experimental-features = [
+          "auto-allocate-uids"
+          "cgroups"
           "nix-command"
           "flakes"
         ];
@@ -105,6 +108,7 @@ in {
           "kvm"
           "nixos-test"
           "big-parallel"
+          "uid-range"
         ];
       };
       extraOptions = ''
