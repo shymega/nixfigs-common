@@ -112,11 +112,6 @@
     };
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        nix-index-database.follows = "nix-index-database";
-      };
-
       inputs.flake-compat.follows = "flake-compat";
     };
     impermanence = {
