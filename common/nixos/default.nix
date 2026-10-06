@@ -14,10 +14,8 @@
     hostname
     == "HEIMDALL-LINUX"
     || hostname == "MJOLNIR-LINUX"
-    || hostname == "LOKI-LINUX"
-    || hostname == "KRATOS-LINUX"
     || hostname == "FREYR-LINUX"
-    || hostname == "TYR-LINUX";
+    || hostname == "THIRA-LINUX";
   isWorkPersonal = hostname == "HEIMDALL-LINUX" || hostname == "MJOLNIR-LINUX" || hostname == "FREYR-LINUX";
   isDeltaZero = hostname == "delta-zero";
 in
