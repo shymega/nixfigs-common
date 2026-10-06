@@ -34,6 +34,11 @@ in
         ./utils
       ]
       ++ (
+        with inputs; [
+          determinate.nixosModules.default
+        ]
+      )
+      ++ (
         if isWorkPersonal
         then
           (with inputs; [
