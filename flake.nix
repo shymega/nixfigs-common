@@ -124,5 +124,6 @@
       url = "github:hyprwm/hyprland-plugins?ref=v0.56.0";
       inputs.hyprland.follows = "hyprland"; # Prevents version mismatch.
     };
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3.23.0";
   };
 }
