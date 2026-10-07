@@ -56,6 +56,11 @@ in
           ./postfix.nix
           ./steam-hardware.nix
           ./xdg.nix
+          ({pkgs, ...}: {
+            environment.systemPackages = [
+              inputs.flox.packages.${pkgs.stdenv.hostPlatform.system}.default
+            ];
+          })
         ]
         else []
       )
