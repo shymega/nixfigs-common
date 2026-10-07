@@ -72,17 +72,20 @@ in {
         sandbox = true;
         substituters = lib.mkForce [
           "https://attic.xuyh0120.win/lantian?priority=10"
+          "https://cache.flox.dev"
           "https://cache.nixos.org/?priority=5"
           "https://hyprland.cachix.org/?priority=10"
           "https://install.determinate.systems"
           "https://nix-community.cachix.org/?priority=10"
           "https://numtide.cachix.org/?priority=10"
           "https://pre-commit-hooks.cachix.org/?priority=10"
-          #          "ssh://eu.nixbuild.net?priority=50"
+          "ssh://eu.nixbuild.net?priority=50"
         ];
         trusted-public-keys = lib.mkForce [
           "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+          "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+          "floxhub-1:0QOAlcobcEvq1mqEf4qAYCaWnTTOXpyoRv/PmqfSixM="
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

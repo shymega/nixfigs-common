@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-{pkgs, ...}: {
+{pkgs, inputs, ...}: {
   environment.systemPackages = with pkgs; [
     acpi
     aria2
@@ -14,6 +14,7 @@
     gnupg
     htop
     ifuse
+    inputs.flox.packages.${pkgs.stdenv.hostPlatform.system}.default
     iw
     libimobiledevice
     lm_sensors
