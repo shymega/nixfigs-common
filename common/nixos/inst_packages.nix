@@ -18,7 +18,6 @@
     gnupg
     htop
     ifuse
-    inputs.flox.packages.${pkgs.stdenv.hostPlatform.system}.default
     iw
     libimobiledevice
     lm_sensors
