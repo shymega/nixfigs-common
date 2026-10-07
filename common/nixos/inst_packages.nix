@@ -2,11 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     acpi
     aria2
