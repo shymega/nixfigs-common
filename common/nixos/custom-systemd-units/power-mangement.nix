@@ -8,7 +8,6 @@
   lib,
   ...
 }: let
-  inherit (config.networking) hostName;
   inherit (lib) getExe getExe' optionalAttrs singleton;
   amdcpu-adjust = pkgs.writeShellScriptBin "amdcpu-adjust" ''
     #!${pkgs.runtimeShell}
