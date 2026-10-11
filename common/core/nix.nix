@@ -37,7 +37,7 @@ in {
 
   nix =
     {
-      distributedBuilds = false;
+      distributedBuilds = true;
       buildMachines = [
         {
           hostName = "eu.nixbuild.net";
@@ -72,7 +72,8 @@ in {
         sandbox = true;
         substituters = lib.mkForce [
           "https://attic.xuyh0120.win/lantian?priority=10"
-          "https://cache.flox.dev"
+          "https://atuin.cachix.org?priority=10"
+          "https://cache.flox.dev?priority=10"
           "https://cache.nixos.org/?priority=5"
           "https://hyprland.cachix.org/?priority=10"
           "https://install.determinate.systems"
@@ -82,6 +83,7 @@ in {
           "ssh://eu.nixbuild.net?priority=50"
         ];
         trusted-public-keys = lib.mkForce [
+          "atuin.cachix.org-1:aNJ8IU+udXIYNtrF+LHH8yIzXqgmva4hVnuHq2REgK0="
           "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
