@@ -136,19 +136,22 @@ in {
           ];
       in
         lib.mkForce determinateNixPkg;
-      registry =
-        {
-          n.flake = inputs.nixpkgs;
-          nu.flake = inputs.nixpkgs-unstable;
-          shypkgs.flake = inputs.shypkgs-public;
-          unstable.flake = inputs.nixpkgs-unstable;
-        }
-        // lib.mapAttrs (_: value: {flake = value;}) inputs;
+      registry = lib.mkForce {
+        n.flake = inputs.nixfigs-common;
+        nixpkgs.flake = inputs.nixfigs-common;
+        nu.flake = inputs.nixpkgs-unstable;
+        shypkgs.flake = inputs.shypkgs-public;
+        unstable.flake = inputs.nixpkgs-unstable;
+      };
       optimise = {
         automatic = true;
         dates = ["06:00"];
       };
-      nixPath = options.nix.nixPath.default ++ lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+      nixPath =
+        lib.mkForce
+        (options.nix.nixPath.default
+          ++ lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry
+          ++ ["nixpkgs-overlays=/etc/nix/overlays-compat/overlays.nix"]);
       gc = {
         automatic = true;
         options = "--delete-older-than 14d";
