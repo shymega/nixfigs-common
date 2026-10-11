@@ -47,6 +47,7 @@
       in
         import inputs.nixfigs-helpers.helpers.devShells {inherit pkgs self system;}
     );
+    legacyPackages = forEachSystem genPkgs;
     common = {
       core = ./common/core;
       nixos = ./common/nixos;
