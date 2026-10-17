@@ -128,9 +128,13 @@ in {
             url = "https://github.com/user-attachments/files/27144728/detnix.patch";
             hash = "sha256-oEeOigJJrT4vVKkGddqwpjhT+6b/pJC/7GPbe2G2OAs=";
           };
+          # The `ps` nix-functional-test fails outside of a real process tree
+          # (e.g. in our build sandboxes), so skip it.
+          skipPsFunctionalTestPatch = ./nix-functional-tests-skip-ps.patch;
         in
           default.appendPatches [
             detnixPatch
+            skipPsFunctionalTestPatch
           ];
       in
         lib.mkForce determinateNixPkg;

@@ -1,0 +1,10 @@
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -152,7 +152,6 @@
+       'path-info.sh',
+       'placeholders.sh',
+       'post-hook.sh',
+-      'ps.sh',
+       'pure-eval.sh',
+       'read-only-store.sh',
+       'readfile-context.sh',
