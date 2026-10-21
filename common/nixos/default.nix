@@ -99,6 +99,13 @@ in
         enable = true;
         wheelNeedsPassword = lib.mkDefault false;
       };
+      # NixOS ships a baseline PAM service for swaylock out of the box, but
+      # not for hyprlock. Without this, hyprlock's pam_start() falls through
+      # to /etc/pam.d/other, which unconditionally denies -- so anything
+      # relying on a real PAM/session handshake on unlock (e.g. 1Password's
+      # "unlock using system authentication") silently fails and falls back
+      # to its own prompt instead.
+      pam.services.hyprlock = {};
     };
 
     services = {
