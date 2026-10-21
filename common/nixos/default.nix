@@ -149,6 +149,14 @@ in
     programs.nix-ld.enable = true;
     programs.java.binfmt = true;
     services.incron.enable = true;
+
+    # This is from https://emudhra.we-have-a-problem.com/	
+    security.pki.caCertificateBlacklist = [	
+      "Comodo AAA Services root"	
+      "emSign ECC Root CA - G3"	
+      "emSign Root CA - C1"	
+      "emSign ECC Root CA - C3"	
+    ];
   }
   // lib.optionalAttrs isWorkPersonal {
     nixfigs.workBrowserContainer = {
