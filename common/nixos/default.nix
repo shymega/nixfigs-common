@@ -30,6 +30,7 @@ in
         ./kernel_params.nix
         ./keychron.nix
         ./networking.nix
+        ./specialisations.nix
         ./systemd-initrd.nix
         ./utils
       ]
