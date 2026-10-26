@@ -9,7 +9,8 @@
   ...
 }: let
   isTargetHost =
-    config.networking.hostName == "HEIMDALL-LINUX"
+    config.networking.hostName
+    == "HEIMDALL-LINUX"
     || config.networking.hostName == "FREYR-LINUX"
     || config.networking.hostName == "MJOLNIR-LINUX";
 
