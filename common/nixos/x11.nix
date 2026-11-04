@@ -26,11 +26,25 @@ with lib; let
       # The DisplayLink dock can attach its evdi outputs while sway is still
       # starting (greeter or session), and the resulting hotplug races
       # sway's view/output mapping into a fatal "cannot map mapped view"
-      # assertion. Restrict wlroots to the real PCI GPUs so evdi hotplug
-      # can't reach sway's DRM backend at all.
+      # assertion. Restrict wlroots to the PCI GPU(s) actually driving a
+      # display so evdi hotplug can't reach sway's DRM backend at all. A
+      # PCI GPU with no connected output (e.g. an offload-only/compute-only
+      # card) must be excluded too: once WLR_DRM_DEVICES is set explicitly,
+      # wlroots aborts if any listed device fails to initialise, instead of
+      # skipping it like it would during auto-probing.
       drm_devices=""
       for dev in /dev/dri/by-path/pci-*-card; do
         [ -e "$dev" ] || continue
+        card="$(basename "$(readlink -f "$dev")")"
+        connected=""
+        for status in /sys/class/drm/"$card"-*/status; do
+          [ -e "$status" ] || continue
+          if [ "$(cat "$status")" = "connected" ]; then
+            connected=1
+            break
+          fi
+        done
+        [ -n "$connected" ] || continue
         drm_devices="''${drm_devices:+$drm_devices:}$dev"
       done
       [ -n "$drm_devices" ] && export WLR_DRM_DEVICES="$drm_devices"
