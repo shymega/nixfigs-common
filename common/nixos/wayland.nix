@@ -27,9 +27,9 @@
       export _JAVA_AWT_WM_NONREPARENTING=1
       ${
       # evdi (DisplayLink) doesn't reliably signal atomic commit completion
-      # behind MJOLNIR's PRIME-sync nvidia/intel hybrid pipeline, which times
-      # out the flip and leaves the panel on "No Signal".
-      lib.optionalString (config.networking.hostName == "MJOLNIR-LINUX") ''
+      # behind the PRIME-sync nvidia/intel hybrid pipeline on these hosts,
+      # which times out the flip and leaves the panel on "No Signal".
+      lib.optionalString (builtins.elem config.networking.hostName ["MJOLNIR-LINUX" "ct-lt-2506-nixos"]) ''
         export WLR_DRM_NO_ATOMIC=1
       ''
     }
