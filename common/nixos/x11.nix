@@ -21,7 +21,20 @@ with lib; let
   sway-wrapped-hw = pkgs.writeScript "sway-wrapped-hw" ''
     #!${pkgs.runtimeShell}
     export WLR_NO_HARDWARE_CURSORS=1
-    ${lib.optionalString needsNoAtomicDrm "export WLR_DRM_NO_ATOMIC=1"}
+    ${lib.optionalString needsNoAtomicDrm ''
+      export WLR_DRM_NO_ATOMIC=1
+      # The DisplayLink dock can attach its evdi outputs while sway is still
+      # starting (greeter or session), and the resulting hotplug races
+      # sway's view/output mapping into a fatal "cannot map mapped view"
+      # assertion. Restrict wlroots to the real PCI GPUs so evdi hotplug
+      # can't reach sway's DRM backend at all.
+      drm_devices=""
+      for dev in /dev/dri/by-path/pci-*-card; do
+        [ -e "$dev" ] || continue
+        drm_devices="''${drm_devices:+$drm_devices:}$dev"
+      done
+      [ -n "$drm_devices" ] && export WLR_DRM_DEVICES="$drm_devices"
+    ''}
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
 in {
