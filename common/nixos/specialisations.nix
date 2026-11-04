@@ -41,6 +41,16 @@
       };
     };
   };
+
+  nvidiaSyncConfig = {
+    hardware.nvidia.prime = {
+      sync.enable = lib.mkForce true;
+      offload = {
+        enable = lib.mkForce false;
+        enableOffloadCmd = lib.mkForce false;
+      };
+    };
+  };
 in {
   config = lib.mkIf isTargetHost {
     specialisation =
@@ -69,6 +79,21 @@ in {
         lts-sway-nvidia-offload = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig;
+        };
+
+        nvidia-sync = {
+          inheritParentConfig = true;
+          configuration = nvidiaSyncConfig;
+        };
+
+        lts-nvidia-sync = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // nvidiaSyncConfig;
+        };
+
+        lts-sway-nvidia-sync = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // swayConfig // nvidiaSyncConfig;
         };
       };
   };
