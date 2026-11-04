@@ -32,6 +32,12 @@ with lib; let
       # card) must be excluded too: once WLR_DRM_DEVICES is set explicitly,
       # wlroots aborts if any listed device fails to initialise, instead of
       # skipping it like it would during auto-probing.
+      #
+      # WLR_DRM_DEVICES is itself colon-separated, so the by-path symlink
+      # (e.g. pci-0000:00:02.0-card) can't be used verbatim: its PCI
+      # address colons get parsed as list separators, splitting one device
+      # into several bogus paths and leaving wlroots with 0 GPUs. Resolve
+      # to the colon-free /dev/dri/cardN target before joining.
       drm_devices=""
       for dev in /dev/dri/by-path/pci-*-card; do
         [ -e "$dev" ] || continue
@@ -45,7 +51,7 @@ with lib; let
           fi
         done
         [ -n "$connected" ] || continue
-        drm_devices="''${drm_devices:+$drm_devices:}$dev"
+        drm_devices="''${drm_devices:+$drm_devices:}/dev/dri/$card"
       done
       [ -n "$drm_devices" ] && export WLR_DRM_DEVICES="$drm_devices"
     ''}
