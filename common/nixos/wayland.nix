@@ -5,6 +5,7 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }: {
   programs.sway = {
@@ -24,6 +25,14 @@
       export XDG_CURRENT_DESKTOP=sway
       export XDG_SESSION_TYPE=wayland
       export _JAVA_AWT_WM_NONREPARENTING=1
+      ${
+      # evdi (DisplayLink) doesn't reliably signal atomic commit completion
+      # behind MJOLNIR's PRIME-sync nvidia/intel hybrid pipeline, which times
+      # out the flip and leaves the panel on "No Signal".
+      lib.optionalString (config.networking.hostName == "MJOLNIR-LINUX") ''
+        export WLR_DRM_NO_ATOMIC=1
+      ''
+    }
     '';
   };
 }

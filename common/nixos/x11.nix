@@ -12,9 +12,16 @@
 with lib; let
   inherit (libx.roleUtils) checkRoles;
   enabled = checkRoles ["workstation"] config.nixfigs.meta.rolesEnabled;
+  # evdi (DisplayLink) doesn't reliably signal atomic commit completion
+  # behind MJOLNIR's PRIME-sync nvidia/intel hybrid pipeline, which times
+  # out the flip and leaves the panel on "No Signal". Harmless no-op on
+  # other hosts since WLR_DRM_NO_ATOMIC/KWIN_DRM_NO_AMS only matter to
+  # compositors that actually read them.
+  isMjolnir = config.networking.hostName == "MJOLNIR-LINUX";
   sway-wrapped-hw = pkgs.writeScript "sway-wrapped-hw" ''
     #!${pkgs.runtimeShell}
     export WLR_NO_HARDWARE_CURSORS=1
+    ${lib.optionalString isMjolnir "export WLR_DRM_NO_ATOMIC=1"}
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
 in {
@@ -86,6 +93,8 @@ in {
       };
     };
     programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
-    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+    environment.sessionVariables =
+      {NIXOS_OZONE_WL = "1";}
+      // lib.optionalAttrs isMjolnir {KWIN_DRM_NO_AMS = "1";};
   };
 }
