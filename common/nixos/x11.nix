@@ -21,7 +21,40 @@ with lib; let
   sway-wrapped-hw = pkgs.writeScript "sway-wrapped-hw" ''
     #!${pkgs.runtimeShell}
     export WLR_NO_HARDWARE_CURSORS=1
-    ${lib.optionalString needsNoAtomicDrm "export WLR_DRM_NO_ATOMIC=1"}
+    ${lib.optionalString needsNoAtomicDrm ''
+      export WLR_DRM_NO_ATOMIC=1
+      # The DisplayLink dock can attach its evdi outputs while sway is still
+      # starting (greeter or session), and the resulting hotplug races
+      # sway's view/output mapping into a fatal "cannot map mapped view"
+      # assertion. Restrict wlroots to the PCI GPU(s) actually driving a
+      # display so evdi hotplug can't reach sway's DRM backend at all. A
+      # PCI GPU with no connected output (e.g. an offload-only/compute-only
+      # card) must be excluded too: once WLR_DRM_DEVICES is set explicitly,
+      # wlroots aborts if any listed device fails to initialise, instead of
+      # skipping it like it would during auto-probing.
+      #
+      # WLR_DRM_DEVICES is itself colon-separated, so the by-path symlink
+      # (e.g. pci-0000:00:02.0-card) can't be used verbatim: its PCI
+      # address colons get parsed as list separators, splitting one device
+      # into several bogus paths and leaving wlroots with 0 GPUs. Resolve
+      # to the colon-free /dev/dri/cardN target before joining.
+      drm_devices=""
+      for dev in /dev/dri/by-path/pci-*-card; do
+        [ -e "$dev" ] || continue
+        card="$(basename "$(readlink -f "$dev")")"
+        connected=""
+        for status in /sys/class/drm/"$card"-*/status; do
+          [ -e "$status" ] || continue
+          if [ "$(cat "$status")" = "connected" ]; then
+            connected=1
+            break
+          fi
+        done
+        [ -n "$connected" ] || continue
+        drm_devices="''${drm_devices:+$drm_devices:}/dev/dri/$card"
+      done
+      [ -n "$drm_devices" ] && export WLR_DRM_DEVICES="$drm_devices"
+    ''}
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
 in {
