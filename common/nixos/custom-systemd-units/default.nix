@@ -7,5 +7,6 @@
     ./power-targets.nix
     ./network-targets.nix
     ./power-mangement.nix
+    ./displaylink-watchdog.nix
   ];
 }
