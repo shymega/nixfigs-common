@@ -51,6 +51,11 @@
       };
     };
   };
+
+  noDisplayLinkConfig = {
+    services.xserver.videoDrivers =
+      lib.mkForce (lib.remove "displaylink" config.services.xserver.videoDrivers);
+  };
 in {
   config = lib.mkIf isTargetHost {
     specialisation =
@@ -63,6 +68,16 @@ in {
         lts-sway = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // swayConfig;
+        };
+
+        lts-no-displaylink = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // noDisplayLinkConfig;
+        };
+
+        lts-sway-no-displaylink = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // swayConfig // noDisplayLinkConfig;
         };
       }
       // lib.optionalAttrs hasNvidia {
@@ -81,6 +96,21 @@ in {
           configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig;
         };
 
+        nvidia-offload-no-displaylink = {
+          inheritParentConfig = true;
+          configuration = nvidiaOffloadConfig // noDisplayLinkConfig;
+        };
+
+        lts-nvidia-offload-no-displaylink = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // nvidiaOffloadConfig // noDisplayLinkConfig;
+        };
+
+        lts-sway-nvidia-offload-no-displaylink = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig // noDisplayLinkConfig;
+        };
+
         nvidia-sync = {
           inheritParentConfig = true;
           configuration = nvidiaSyncConfig;
@@ -94,6 +124,21 @@ in {
         lts-sway-nvidia-sync = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // swayConfig // nvidiaSyncConfig;
+        };
+
+        nvidia-sync-no-displaylink = {
+          inheritParentConfig = true;
+          configuration = nvidiaSyncConfig // noDisplayLinkConfig;
+        };
+
+        lts-nvidia-sync-no-displaylink = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // nvidiaSyncConfig // noDisplayLinkConfig;
+        };
+
+        lts-sway-nvidia-sync-no-displaylink = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // swayConfig // nvidiaSyncConfig // noDisplayLinkConfig;
         };
       };
   };
