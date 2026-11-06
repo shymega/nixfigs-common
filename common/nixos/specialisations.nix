@@ -65,6 +65,11 @@ in {
           configuration = ltsKernelConfig;
         };
 
+        sway = {
+          inheritParentConfig = true;
+          configuration = swayConfig;
+        };
+
         lts-sway = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // swayConfig;
