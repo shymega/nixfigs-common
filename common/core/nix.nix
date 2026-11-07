@@ -37,7 +37,7 @@ in {
 
   nix =
     {
-      distributedBuilds = true;
+      distributedBuilds = false;
       buildMachines = [
         {
           hostName = "eu.nixbuild.net";
