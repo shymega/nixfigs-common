@@ -12,16 +12,10 @@
 with lib; let
   inherit (libx.roleUtils) checkRoles;
   enabled = checkRoles ["workstation"] config.nixfigs.meta.rolesEnabled;
-  # evdi (DisplayLink) doesn't reliably signal atomic commit completion
-  # behind the PRIME-sync nvidia/intel hybrid pipeline on these hosts, which
-  # times out the flip and leaves the panel on "No Signal". Harmless no-op
-  # on other hosts since WLR_DRM_NO_ATOMIC/KWIN_DRM_NO_AMS only matter to
-  # compositors that actually read them.
-  needsNoAtomicDrm = builtins.elem config.networking.hostName ["MJOLNIR-LINUX" "ct-lt-2506-nixos"];
   sway-wrapped-hw = pkgs.writeScript "sway-wrapped-hw" ''
     #!${pkgs.runtimeShell}
     export WLR_NO_HARDWARE_CURSORS=1
-    ${lib.optionalString needsNoAtomicDrm ''
+    ${lib.optionalString config.nixfigs.graphical.needsNoAtomicDrm ''
       export WLR_DRM_NO_ATOMIC=1
       # The DisplayLink dock can attach its evdi outputs while sway is still
       # starting (greeter or session), and the resulting hotplug races
@@ -58,6 +52,21 @@ with lib; let
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
 in {
+  options.nixfigs.graphical.needsNoAtomicDrm = mkOption {
+    type = types.bool;
+    default = builtins.elem config.networking.hostName ["MJOLNIR-LINUX" "ct-lt-2506-nixos"];
+    description = ''
+      evdi (DisplayLink) doesn't reliably signal atomic commit completion
+      behind the PRIME-sync nvidia/intel hybrid pipeline on these hosts,
+      which times out the flip and leaves the panel on "No Signal".
+      Disables atomic-KMS (WLR_DRM_NO_ATOMIC, KWIN_DRM_NO_AMS, AQ_NO_ATOMIC)
+      and the WLR_DRM_DEVICES connected-output pin on affected hosts;
+      harmless no-op elsewhere since those only matter to compositors
+      that actually read them. Overridable per specialisation so it
+      also reaches Sway/Hyprland in nixfigs-homes via osConfig.
+    '';
+  };
+
   config = mkIf enabled {
     environment.etc."greetd/kanshi-config" = {
       source = "${config.users.users."dzrodriguez".home}/.config/kanshi/config";
@@ -129,6 +138,6 @@ in {
     programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
     environment.sessionVariables =
       {NIXOS_OZONE_WL = "1";}
-      // lib.optionalAttrs needsNoAtomicDrm {KWIN_DRM_NO_AMS = "1";};
+      // lib.optionalAttrs config.nixfigs.graphical.needsNoAtomicDrm {KWIN_DRM_NO_AMS = "1";};
   };
 }

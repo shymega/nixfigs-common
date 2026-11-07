@@ -56,6 +56,10 @@
     services.xserver.videoDrivers =
       lib.mkForce (lib.remove "displaylink" config.services.xserver.videoDrivers);
   };
+
+  atomicDrmConfig = {
+    nixfigs.graphical.needsNoAtomicDrm = lib.mkForce false;
+  };
 in {
   config = lib.mkIf isTargetHost {
     specialisation =
@@ -73,6 +77,11 @@ in {
         lts-sway = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // swayConfig;
+        };
+
+        atomic-drm = {
+          inheritParentConfig = true;
+          configuration = atomicDrmConfig;
         };
 
         lts-no-displaylink = {
