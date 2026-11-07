@@ -23,6 +23,8 @@ with lib; let
     export WLR_NO_HARDWARE_CURSORS=1
     ${lib.optionalString needsNoAtomicDrm ''
       export WLR_DRM_NO_ATOMIC=1
+    ''}
+    ${lib.optionalString config.nixfigs.graphical.sway.pinDrmDevices ''
       # The DisplayLink dock can attach its evdi outputs while sway is still
       # starting (greeter or session), and the resulting hotplug races
       # sway's view/output mapping into a fatal "cannot map mapped view"
@@ -58,6 +60,17 @@ with lib; let
     exec ${getExe pkgs.sway} --unsupported-gpu "$@"
   '';
 in {
+  options.nixfigs.graphical.sway.pinDrmDevices = mkOption {
+    type = types.bool;
+    default = needsNoAtomicDrm;
+    description = ''
+      Restrict sway's wlroots DRM backend (WLR_DRM_DEVICES) to PCI GPUs
+      with a connected display output, keeping DisplayLink evdi hotplug
+      from reaching sway's DRM backend. Disable to let wlroots
+      auto-probe all GPUs instead.
+    '';
+  };
+
   config = mkIf enabled {
     environment.etc."greetd/kanshi-config" = {
       source = "${config.users.users."dzrodriguez".home}/.config/kanshi/config";

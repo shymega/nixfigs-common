@@ -56,6 +56,10 @@
     services.xserver.videoDrivers =
       lib.mkForce (lib.remove "displaylink" config.services.xserver.videoDrivers);
   };
+
+  noDrmPinConfig = {
+    nixfigs.graphical.sway.pinDrmDevices = lib.mkForce false;
+  };
 in {
   config = lib.mkIf isTargetHost {
     specialisation =
@@ -73,6 +77,11 @@ in {
         lts-sway = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // swayConfig;
+        };
+
+        sway-no-drm-pin = {
+          inheritParentConfig = true;
+          configuration = swayConfig // noDrmPinConfig;
         };
 
         lts-no-displaylink = {
