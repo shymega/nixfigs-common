@@ -18,6 +18,12 @@ in {
       keyMode = "emacs";
       newSession = false;
       terminal = "tmux-256color";
+
+      # The NixOS module has no `mouse` option; set it via extraConfig.
+      extraConfig = ''
+        set -g mouse on
+        set -as terminal-features ",*:hyperlinks"
+      '';
     };
   };
 }
