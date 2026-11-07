@@ -84,6 +84,21 @@ in {
           configuration = atomicDrmConfig;
         };
 
+        lts-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // atomicDrmConfig;
+        };
+
+        sway-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = swayConfig // atomicDrmConfig;
+        };
+
+        lts-sway-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // swayConfig // atomicDrmConfig;
+        };
+
         lts-no-displaylink = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // noDisplayLinkConfig;
