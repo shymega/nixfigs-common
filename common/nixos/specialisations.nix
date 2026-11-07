@@ -94,7 +94,7 @@ in {
           configuration = ltsKernelConfig // swayConfig // noDisplayLinkConfig;
         };
       }
-      // lib.optionalAttrs hasNvidia {
+      // lib.optionalAttrs (isTargetHost && hasNvidia) {
         nvidia-offload = {
           inheritParentConfig = true;
           configuration = nvidiaOffloadConfig;
