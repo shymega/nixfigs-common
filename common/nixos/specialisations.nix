@@ -125,6 +125,21 @@ in {
           configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig;
         };
 
+        nvidia-offload-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = nvidiaOffloadConfig // atomicDrmConfig;
+        };
+
+        lts-nvidia-offload-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // nvidiaOffloadConfig // atomicDrmConfig;
+        };
+
+        lts-sway-nvidia-offload-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig // atomicDrmConfig;
+        };
+
         nvidia-offload-no-displaylink = {
           inheritParentConfig = true;
           configuration = nvidiaOffloadConfig // noDisplayLinkConfig;
@@ -153,6 +168,21 @@ in {
         lts-sway-nvidia-sync = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // swayConfig // nvidiaSyncConfig;
+        };
+
+        nvidia-sync-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = nvidiaSyncConfig // atomicDrmConfig;
+        };
+
+        lts-nvidia-sync-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // nvidiaSyncConfig // atomicDrmConfig;
+        };
+
+        lts-sway-nvidia-sync-atomic-drm = {
+          inheritParentConfig = true;
+          configuration = ltsKernelConfig // swayConfig // nvidiaSyncConfig // atomicDrmConfig;
         };
 
         nvidia-sync-no-displaylink = {
