@@ -152,8 +152,7 @@ in {
       nixPath =
         lib.mkForce
         (options.nix.nixPath.default
-          ++ lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry
-          ++ ["nixpkgs-overlays=/etc/nix/overlays-compat/overlays.nix"]);
+          ++ lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry);
       gc = {
         automatic = true;
         options = "--delete-older-than 14d";
