@@ -12,12 +12,6 @@
 }: let
   inherit (libx) isDarwin;
 in {
-  environment.etc."nix/overlays-compat/overlays.nix".text = ''
-    final: prev:
-    with prev.lib;
-    let overlays = builtins.attrValues (builtins.getFlake "path:/etc/nixos").outputs.overlays; in
-      foldl' (flip extends) (_: prev) overlays final
-  '';
 
   programs.ssh = {
     extraConfig = ''
