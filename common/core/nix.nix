@@ -79,7 +79,6 @@ in {
           "https://nix-community.cachix.org/?priority=10"
           "https://numtide.cachix.org/?priority=10"
           "https://pre-commit-hooks.cachix.org/?priority=10"
-          "ssh://eu.nixbuild.net?priority=50"
         ];
         trusted-public-keys = lib.mkForce [
           "atuin.cachix.org-1:aNJ8IU+udXIYNtrF+LHH8yIzXqgmva4hVnuHq2REgK0="
