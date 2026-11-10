@@ -64,6 +64,7 @@ in {
         build-users-group = "nixbld";
         builders-use-substitutes = true;
         download-attempts = 5;
+        download-buffer-size = 67108864;
         keep-going = true;
         trusted-users = [
           "root"
@@ -99,13 +100,13 @@ in {
           "flakes"
         ];
         connect-timeout = lib.mkForce 90;
-        http-connections = 128;
-        max-substitution-jobs = 128;
+        http-connections = 12;
+        max-substitution-jobs = 12;
         warn-dirty = false;
-        cores = 0;
-        eval-cores = 0;
+        cores = 4;
+        eval-cores = 2;
         lazy-trees = true;
-        max-jobs = "auto";
+        max-jobs = "4";
         system-features = [
           "kvm"
           "nixos-test"
