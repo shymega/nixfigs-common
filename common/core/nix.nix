@@ -99,7 +99,7 @@ in {
         cores = 4;
         eval-cores = 2;
         lazy-trees = true;
-        max-jobs = "4";
+        max-jobs = 4;
         system-features = [
           "kvm"
           "nixos-test"
