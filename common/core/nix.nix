@@ -12,7 +12,6 @@
 }: let
   inherit (libx) isDarwin;
 in {
-
   programs.ssh = {
     extraConfig = ''
       Host eu.nixbuild.net
