@@ -96,9 +96,8 @@ in {
             }).overrideAttrs (_old: {
               passthru.providedSessions = ["sway-unsupported"];
             });
-          inherit (config.nixfigs.graphical.windowManagers) selectedWindowManager;
         in
-          lib.optional (selectedWindowManager == "sway") swayUnsupportedSession;
+          lib.singleton swayUnsupportedSession;
       };
       desktopManager = {
         plasma6.enable = true;
