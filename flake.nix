@@ -25,6 +25,7 @@
     );
 
     forEachSystem = inputs.nixpkgs.lib.genAttrs systems;
+    pkgsFor = forEachSystem genPkgs;
   in {
     inherit (inputs.nixfigs-pkgs) overlays nixpkgs-config;
     # for `nix fmt`
@@ -43,11 +44,11 @@
       });
     devShells = forEachSystem (
       system: let
-        pkgs = genPkgs system;
+        pkgs = pkgsFor.${system};
       in
         import inputs.nixfigs-helpers.helpers.devShells {inherit pkgs self system;}
     );
-    legacyPackages = forEachSystem genPkgs;
+    legacyPackages = pkgsFor;
     common = {
       core = ./common/core;
       nixos = ./common/nixos;
