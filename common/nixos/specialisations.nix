@@ -28,10 +28,6 @@
     boot.zfs.package = lib.mkForce pkgs.zfs;
   };
 
-  swayConfig = {
-    nixfigs.graphical.windowManagers.selectedWindowManager = lib.mkForce "sway";
-  };
-
   nvidiaOffloadConfig = {
     hardware.nvidia.prime = {
       sync.enable = lib.mkForce false;
@@ -59,16 +55,6 @@ in {
           configuration = ltsKernelConfig;
         };
 
-        sway = {
-          inheritParentConfig = true;
-          configuration = swayConfig;
-        };
-
-        lts-sway = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig;
-        };
-
         atomic-drm = {
           inheritParentConfig = true;
           configuration = atomicDrmConfig;
@@ -79,24 +65,14 @@ in {
           configuration = ltsKernelConfig // atomicDrmConfig;
         };
 
-        sway-atomic-drm = {
+        no-displaylink = {
           inheritParentConfig = true;
-          configuration = swayConfig // atomicDrmConfig;
-        };
-
-        lts-sway-atomic-drm = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig // atomicDrmConfig;
+          configuration = noDisplayLinkConfig;
         };
 
         lts-no-displaylink = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // noDisplayLinkConfig;
-        };
-
-        lts-sway-no-displaylink = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig // noDisplayLinkConfig;
         };
       }
       // lib.optionalAttrs (isTargetHost && hasNvidia) {
@@ -110,11 +86,6 @@ in {
           configuration = ltsKernelConfig // nvidiaOffloadConfig;
         };
 
-        lts-sway-nvidia-offload = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig;
-        };
-
         nvidia-offload-atomic-drm = {
           inheritParentConfig = true;
           configuration = nvidiaOffloadConfig // atomicDrmConfig;
@@ -125,11 +96,6 @@ in {
           configuration = ltsKernelConfig // nvidiaOffloadConfig // atomicDrmConfig;
         };
 
-        lts-sway-nvidia-offload-atomic-drm = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig // atomicDrmConfig;
-        };
-
         nvidia-offload-no-displaylink = {
           inheritParentConfig = true;
           configuration = nvidiaOffloadConfig // noDisplayLinkConfig;
@@ -138,11 +104,6 @@ in {
         lts-nvidia-offload-no-displaylink = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // nvidiaOffloadConfig // noDisplayLinkConfig;
-        };
-
-        lts-sway-nvidia-offload-no-displaylink = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig // noDisplayLinkConfig;
         };
       };
   };
