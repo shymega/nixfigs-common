@@ -42,16 +42,6 @@
     };
   };
 
-  nvidiaSyncConfig = {
-    hardware.nvidia.prime = {
-      sync.enable = lib.mkForce true;
-      offload = {
-        enable = lib.mkForce false;
-        enableOffloadCmd = lib.mkForce false;
-      };
-    };
-  };
-
   noDisplayLinkConfig = {
     services.xserver.videoDrivers =
       lib.mkForce (lib.remove "displaylink" config.services.xserver.videoDrivers);
@@ -153,51 +143,6 @@ in {
         lts-sway-nvidia-offload-no-displaylink = {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // swayConfig // nvidiaOffloadConfig // noDisplayLinkConfig;
-        };
-
-        nvidia-sync = {
-          inheritParentConfig = true;
-          configuration = nvidiaSyncConfig;
-        };
-
-        lts-nvidia-sync = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // nvidiaSyncConfig;
-        };
-
-        lts-sway-nvidia-sync = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig // nvidiaSyncConfig;
-        };
-
-        nvidia-sync-atomic-drm = {
-          inheritParentConfig = true;
-          configuration = nvidiaSyncConfig // atomicDrmConfig;
-        };
-
-        lts-nvidia-sync-atomic-drm = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // nvidiaSyncConfig // atomicDrmConfig;
-        };
-
-        lts-sway-nvidia-sync-atomic-drm = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig // nvidiaSyncConfig // atomicDrmConfig;
-        };
-
-        nvidia-sync-no-displaylink = {
-          inheritParentConfig = true;
-          configuration = nvidiaSyncConfig // noDisplayLinkConfig;
-        };
-
-        lts-nvidia-sync-no-displaylink = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // nvidiaSyncConfig // noDisplayLinkConfig;
-        };
-
-        lts-sway-nvidia-sync-no-displaylink = {
-          inheritParentConfig = true;
-          configuration = ltsKernelConfig // swayConfig // nvidiaSyncConfig // noDisplayLinkConfig;
         };
       };
   };
