@@ -9,7 +9,7 @@
   ...
 }: {
   programs.sway = {
-    enable = config.nixfigs.graphical.windowManagers.selectedWindowManager == "sway";
+    enable = true;
     package = pkgs.sway;
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
