@@ -55,10 +55,10 @@
     };
   };
   inputs = {
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    nixpkgs-shymega.url = "github:shymega/nixpkgs?ref=shymega/staging";
+    nixpkgs.follows = "nixfigs-pkgs/nixpkgs";
+    nixpkgs-unstable.follows = "nixfigs-pkgs/nixpkgs-unstable";
+    nixpkgs-master.follows = "nixfigs-pkgs/nixpkgs-master";
+    nixpkgs-shymega.follows = "nixfigs-pkgs/nixpkgs-shymega";
     nixfigs-helpers = {
       url = "github:shymega/nixfigs-helpers";
       inputs.agenix.follows = "agenix";
@@ -69,14 +69,12 @@
       url = "github:shymega/nixfigs-pkgs";
       inputs.nix-alien.follows = "nix-alien";
       inputs.nixfigs-helpers.follows = "nixfigs-helpers";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-shymega.follows = "nixpkgs-shymega";
-      inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
       inputs.nur.follows = "nur";
     };
     nixfigs-networks = {
       url = "github:shymega/nixfigs-networks";
       inputs.nixfigs-helpers.follows = "nixfigs-helpers";
+      inputs.nixfigs-pkgs.follows = "nixfigs-pkgs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-registry = {
