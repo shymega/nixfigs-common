@@ -95,7 +95,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix = {
-      url = "github:ryantm/agenix?ref=0.15.0";
+      url = "github:ryantm/agenix?ref=0.18.0";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
