@@ -49,12 +49,7 @@
 in {
   options.nixfigs.meta.specialisation = lib.mkOption {
     type = lib.types.str;
-    default = let
-      inherit (config.boot.loader.grub) configurationName;
-    in
-      if configurationName == ""
-      then "default"
-      else configurationName;
+    default = "default";
   };
 
   config = lib.mkIf isTargetHost {
