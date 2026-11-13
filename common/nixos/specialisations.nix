@@ -47,8 +47,22 @@
     nixfigs.graphical.needsNoAtomicDrm = lib.mkForce false;
   };
 in {
+  options.nixfigs.meta.specialisation = lib.mkOption {
+    type = lib.types.str;
+    default = let
+      inherit (config.boot.loader.grub) configurationName;
+    in
+      if configurationName == ""
+      then "default"
+      else configurationName;
+  };
+
   config = lib.mkIf isTargetHost {
-    specialisation =
+    specialisation = lib.mapAttrs (name: spec: spec // {
+      configuration = spec.configuration // {
+        nixfigs.meta.specialisation = name;
+      };
+    }) (
       {
         lts = {
           inheritParentConfig = true;
@@ -105,6 +119,7 @@ in {
           inheritParentConfig = true;
           configuration = ltsKernelConfig // nvidiaOffloadConfig // noDisplayLinkConfig;
         };
-      };
+      }
+    );
   };
 }
