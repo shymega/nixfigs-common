@@ -58,11 +58,15 @@ in {
   };
 
   config = lib.mkIf isTargetHost {
-    specialisation = lib.mapAttrs (name: spec: spec // {
-      configuration = spec.configuration // {
-        nixfigs.meta.specialisation = name;
-      };
-    }) (
+    specialisation = lib.mapAttrs (name: spec:
+      spec
+      // {
+        configuration =
+          spec.configuration
+          // {
+            nixfigs.meta.specialisation = name;
+          };
+      }) (
       {
         lts = {
           inheritParentConfig = true;
