@@ -29,13 +29,19 @@ with lib; let
   # and recreate the evdi device exactly as an actual unplug would;
   # dlm.service then starts itself again via the existing
   # add-triggered udev rule.
-  # threshold=3/window=30 rarely accumulated 3 matching lines before the
-  # freeze stopped producing new ones (the compositor stops issuing
-  # commits once wedged), so the reset often never fired. 2 lines within
-  # a tighter window is enough since "Double connect" immediately
-  # followed by a single flip_done/commit-wait timeout is already
-  # the observed wedge signature; cooldown is shortened to match so a
-  # dock that re-wedges shortly after a reset isn't left stuck waiting.
+  # threshold=3/window=30 rarely accumulated 3 matching lines before a
+  # wedged output stopped producing new ones (the compositor stops
+  # issuing commits once frozen), so the reset often never fired. 2
+  # lines is enough since "Double connect" immediately followed by a
+  # single flip_done/commit-wait timeout is already the observed wedge
+  # signature; cooldown is shortened to match so a dock that re-wedges
+  # shortly after a reset isn't left stuck waiting. Counting is done
+  # against a sliding window of timestamps rather than a fixed bucket,
+  # since the previous "reset count when now - window_start > window"
+  # logic opened a new bucket on any late-arriving line, which could
+  # drop an already-seen line (e.g. "Double connect") the moment the
+  # next one landed just past the bucket boundary -- the exact
+  # undercount this is meant to catch.
   evdi-watchdog = pkgs.writeShellScriptBin "evdi-watchdog" ''
     #!${pkgs.runtimeShell}
 
@@ -43,20 +49,22 @@ with lib; let
     window=20
     cooldown=30
     last_reset=0
-    count=0
-    window_start=0
+    timestamps=()
 
     ${getExe' pkgs.systemd "journalctl"} -kf -n 0 \
       -g 'evdi.*(flip_done timed out|commit wait timed out|Double connect)' |
     while IFS= read -r _line; do
       now=$(${getExe' pkgs.coreutils "date"} +%s)
-      if [ $((now - window_start)) -gt "$window" ]; then
-        window_start=$now
-        count=0
-      fi
-      count=$((count + 1))
-      if [ "$count" -ge "$threshold" ] && [ $((now - last_reset)) -ge "$cooldown" ]; then
-        echo "evdi-watchdog: $count evdi failures within ''${window}s, soft-resetting DisplayLink dock"
+      cutoff=$((now - window))
+      kept=()
+      for t in "''${timestamps[@]}"; do
+        [ "$t" -ge "$cutoff" ] && kept+=("$t")
+      done
+      kept+=("$now")
+      timestamps=("''${kept[@]}")
+
+      if [ "''${#timestamps[@]}" -ge "$threshold" ] && [ $((now - last_reset)) -ge "$cooldown" ]; then
+        echo "evdi-watchdog: ''${#timestamps[@]} evdi failures within ''${window}s, soft-resetting DisplayLink dock"
 
         dl_device=""
         for vendor_file in /sys/bus/usb/devices/*/idVendor; do
@@ -80,7 +88,7 @@ with lib; let
         fi
 
         last_reset=$now
-        count=0
+        timestamps=()
       fi
     done
   '';
