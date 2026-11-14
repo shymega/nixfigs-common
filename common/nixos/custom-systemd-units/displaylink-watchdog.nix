@@ -34,7 +34,7 @@ with lib; let
     window_start=0
 
     ${getExe' pkgs.systemd "journalctl"} -kf -n 0 \
-      -g 'evdi.*(flip_done timed out|commit wait timed out)' |
+      -g 'evdi.*(flip_done timed out|commit wait timed out|Double connect)' |
     while IFS= read -r _line; do
       now=$(${getExe' pkgs.coreutils "date"} +%s)
       if [ $((now - window_start)) -gt "$window" ]; then
@@ -43,7 +43,7 @@ with lib; let
       fi
       count=$((count + 1))
       if [ "$count" -ge "$threshold" ] && [ $((now - last_restart)) -ge "$cooldown" ]; then
-        echo "evdi-watchdog: $count evdi flip timeouts within ''${window}s, restarting dlm.service"
+        echo "evdi-watchdog: $count evdi failures within ''${window}s, restarting dlm.service"
         ${getExe' pkgs.systemd "systemctl"} restart dlm.service
         last_restart=$now
         count=0
