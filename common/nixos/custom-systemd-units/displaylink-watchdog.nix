@@ -18,18 +18,24 @@ with lib; let
   # blocks aquamarine's synchronous commit-wait and freezes the whole
   # compositor -- cursor and input included, not just the DisplayLink
   # panels -- while DisplayLinkManager quietly burns CPU in the
-  # background. The only previously-known recovery was a full `loginctl
-  # terminate-user`, which just SIGKILLs the wedged process as collateral
-  # once systemd's stop timeout expires. Watch for the kernel's own
-  # timeout errors instead and restart dlm.service directly as soon as
-  # they repeat, instead of waiting on a full session teardown.
+  # background. Merely restarting dlm.service doesn't reproduce what a
+  # physical unplug/replug does: evdi's kernel driver keeps the wedged
+  # DRM minor and painter connection alive across a userspace restart, so
+  # the compositor never sees the output go away and come back, and the
+  # only previously-known recovery was a full `loginctl terminate-user`
+  # (which just SIGKILLs the wedged process once systemd's stop timeout
+  # expires) or physically cycling the dock. Soft-reset the dock's own
+  # USB device instead -- unbind/rebind forces the kernel to tear down
+  # and recreate the evdi device exactly as an actual unplug would;
+  # dlm.service then starts itself again via the existing
+  # add-triggered udev rule.
   evdi-watchdog = pkgs.writeShellScriptBin "evdi-watchdog" ''
     #!${pkgs.runtimeShell}
 
     threshold=3
     window=30
     cooldown=60
-    last_restart=0
+    last_reset=0
     count=0
     window_start=0
 
@@ -42,10 +48,31 @@ with lib; let
         count=0
       fi
       count=$((count + 1))
-      if [ "$count" -ge "$threshold" ] && [ $((now - last_restart)) -ge "$cooldown" ]; then
-        echo "evdi-watchdog: $count evdi failures within ''${window}s, restarting dlm.service"
-        ${getExe' pkgs.systemd "systemctl"} restart dlm.service
-        last_restart=$now
+      if [ "$count" -ge "$threshold" ] && [ $((now - last_reset)) -ge "$cooldown" ]; then
+        echo "evdi-watchdog: $count evdi failures within ''${window}s, soft-resetting DisplayLink dock"
+
+        dl_device=""
+        for vendor_file in /sys/bus/usb/devices/*/idVendor; do
+          [ -e "$vendor_file" ] || continue
+          read -r vendor <"$vendor_file"
+          if [ "$vendor" = "17e9" ]; then
+            dl_device_dir="''${vendor_file%/*}"
+            dl_device="''${dl_device_dir##*/}"
+            break
+          fi
+        done
+
+        ${getExe' pkgs.systemd "systemctl"} stop dlm.service
+        if [ -n "$dl_device" ]; then
+          echo "$dl_device" >/sys/bus/usb/drivers/usb/unbind
+          ${getExe' pkgs.coreutils "sleep"} 1
+          echo "$dl_device" >/sys/bus/usb/drivers/usb/bind
+        else
+          echo "evdi-watchdog: no USB device with idVendor 17e9 found, falling back to dlm.service restart"
+          ${getExe' pkgs.systemd "systemctl"} start dlm.service
+        fi
+
+        last_reset=$now
         count=0
       fi
     done
@@ -53,7 +80,7 @@ with lib; let
 in {
   config = mkIf enabled {
     systemd.services.evdi-watchdog = {
-      description = "Restart dlm.service when evdi flip-done timeouts repeat";
+      description = "Soft-reset the DisplayLink dock's USB device when evdi failures repeat";
       after = ["dlm.service"];
       wantedBy = ["multi-user.target"];
       serviceConfig = {
