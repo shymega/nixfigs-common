@@ -29,12 +29,19 @@ with lib; let
   # and recreate the evdi device exactly as an actual unplug would;
   # dlm.service then starts itself again via the existing
   # add-triggered udev rule.
+  # threshold=3/window=30 rarely accumulated 3 matching lines before the
+  # freeze stopped producing new ones (the compositor stops issuing
+  # commits once wedged), so the reset often never fired. 2 lines within
+  # a tighter window is enough since "Double connect" immediately
+  # followed by a single flip_done/commit-wait timeout is already
+  # the observed wedge signature; cooldown is shortened to match so a
+  # dock that re-wedges shortly after a reset isn't left stuck waiting.
   evdi-watchdog = pkgs.writeShellScriptBin "evdi-watchdog" ''
     #!${pkgs.runtimeShell}
 
-    threshold=3
-    window=30
-    cooldown=60
+    threshold=2
+    window=20
+    cooldown=30
     last_reset=0
     count=0
     window_start=0
