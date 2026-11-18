@@ -5,12 +5,9 @@
 {
   pkgs,
   lib,
-  config,
   ...
 }:
 with lib; let
-  enabled = elem "displaylink" config.services.xserver.videoDrivers;
-
   # DisplayLinkManager (dlm.service) occasionally wedges itself mid-session
   # (observed alongside kernel "evdi_painter_connect: Double connect"
   # warnings) and keeps running but stops servicing frames. evdi's kernel
