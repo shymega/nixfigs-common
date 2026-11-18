@@ -93,7 +93,7 @@ with lib; let
     done
   '';
 in {
-  config = mkIf enabled {
+  config = mkIf false {
     systemd.services.evdi-watchdog = {
       description = "Soft-reset the DisplayLink dock's USB device when evdi failures repeat";
       after = ["dlm.service"];
